@@ -1,5 +1,5 @@
-//source : https://github.com/dimagi/ethiopian-date-converter
-
+// source : https://github.com/dimagi/ethiopian-date-converter
+// https://www.linkedin.com/pulse/demonstrating-bdd-behavior-driven-development-go-artur-neumann/
 package main
 
 import (
@@ -20,21 +20,35 @@ var host = "http://localhost:8080"
 var res *http.Response
 
 type response struct {
-	msg string
+	Msg string `json:"response"`
+}
+type notFound struct {
+	Msg string
 }
 
+var expectedEthio, expectedGrego string
+
+// sample unit-test
 func TestEthiopianDate(t *testing.T) {
 	ethiopianDate := "2015-01-18 00:00:00 +0000 UTC"
 	gregorianDate := "2022-09-28 00:00:00 +0000 UTC"
 
-	expectedEthio := ethioGrego.To_ethiopian(2022, 9, 28).String()
-	expectedGrego := ethioGrego.To_gregorian(2015, 1, 18).String()
-
+	time, err := ethioGrego.To_ethiopian(2022, 9, 28)
+	if err == nil {
+		expectedEthio = time.String()
+	}
+	time, err = ethioGrego.To_gregorian(2015, 1, 18)
+	if err == nil {
+		expectedGrego = time.String()
+	}
 	if !reflect.DeepEqual(ethiopianDate, expectedEthio) && !reflect.DeepEqual(gregorianDate, expectedGrego) {
 		t.Errorf("Date conversion not work got %v want %v", expectedEthio, ethiopianDate)
 	}
 }
 
+//feature file steps definition- BDD
+
+// sending a request
 func aRequestIsSentToTheEndpoint(method, endpoint string) error {
 	var reader = strings.NewReader("")
 	var request, err = http.NewRequest(method, host+endpoint, reader)
@@ -60,11 +74,15 @@ func theResponseContentShouldBe(expectedContent string) error {
 	body, _ := ioutil.ReadAll(res.Body)
 	resp := response{}
 	json.Unmarshal(body, &resp)
+	if resp.Msg == "" {
 
-	if expectedContent != strings.TrimSpace(string(resp.msg)) {
-		return fmt.Errorf("response content not as expected! Expected '%s', got '%s'", expectedContent, string(body))
 	}
-	return nil
+
+	if expectedContent != resp.Msg  && expectedContent != string(body) {
+		return fmt.Errorf("response content not as expected! Expected '%s', got '%s'", expectedContent, string(body))
+	} else {
+		return nil
+	}
 }
 
 func FeatureContext(s *godog.ScenarioContext) {

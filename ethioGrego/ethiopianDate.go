@@ -6,6 +6,7 @@ Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
 package ethioGrego
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -28,17 +29,13 @@ func start_day_of_ethiopian(year int) int {
 }
 
 // Gregorian date object representation of provided Ethiopian date
-func To_gregorian(year, month, date int) time.Time {
+func To_gregorian(year, month, date int) (time.Time, error) {
 	var gregorian_date int
 	var dateResult string
-	// prevent incorect input
-	inputs := []int{year, month, date}
-	for i := range inputs {
-		if inputs[i] == 0 || len(inputs) != 3 {
-			fmt.Print("Malformed input can't be converted.")
-		}
-	}
 
+	if !isValid(year, month, date) {
+		return time.Time{}, errors.New("not a valid date")
+	}
 	// Ethiopian new year in Gregorian calendar
 	new_year_day := start_day_of_ethiopian(year)
 
@@ -102,31 +99,29 @@ func To_gregorian(year, month, date int) time.Time {
 	res, err := time.Parse("2006-01-02", dateResult)
 	if err != nil {
 		fmt.Print("unabe to parse dateResult.", err)
+		return time.Time{}, errors.New("not a valid date")
+
 	}
-	return res
+	return res, nil
 }
 
 // Ethiopian date string representation of provided Gregorian date
-func To_ethiopian(year, month, date int) time.Time {
+func To_ethiopian(year, month, date int) (time.Time, error) {
 	var tahissas int
 	var ethiopian_date int
 	var dateResult string
 
-	// prevent incorect input
-	inputs := []int{year, month, date}
-	for i := range inputs {
-		if inputs[i] == 0 || len(inputs) != 3 {
-			fmt.Printf("Malformed input can't be converted.")
-		}
+	if !isValid(year, month, date) {
+		return time.Time{}, errors.New("not a valid date")
 	}
 
 	//  date between 5 and 14 of May 1582 are invalid
 	if month == 10 && date >= 5 && date <= 14 && year == 1582 {
 		fmt.Printf("Invalid Date between 5-14 May 1582.")
+		return time.Time{}, errors.New("not a valid date")
 	}
 
 	// Number of days in gregorian months starting with January (index 1)
-	//
 	//	Index 0 is reserved for leap years switches.
 	gregorian_months := []int{0, 31, 28, 31, 30, 31, 30,
 		31, 31, 30, 31, 30, 31}
@@ -209,7 +204,22 @@ func To_ethiopian(year, month, date int) time.Time {
 	dateResult = strconv.Itoa(ethiopian_year) + "-" + mon + "-" + da
 	res, err := time.Parse("2006-01-02", dateResult)
 	if err != nil {
-		fmt.Print("unabe to parse dateResult.", err)
+		fmt.Print("unabe to parse dateResult.", err) //for debugging purpose
+		return time.Time{}, errors.New("not a valid date")
 	}
-	return res
+	return res, nil
+}
+
+// prevent incorect input
+func isValid(year, month, date int) bool {
+	inputs := []int{year, month, date}
+	for i := range inputs {
+		if inputs[i] <= 0 {
+			return false
+		}
+	}
+	if len(inputs) != 3 || inputs[2] > 31 || inputs[1] > 12 {
+		return false
+	}
+	return true
 }
