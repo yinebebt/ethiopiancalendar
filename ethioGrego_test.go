@@ -1,16 +1,15 @@
-// source : https://github.com/dimagi/ethiopian-date-converter
-// https://www.linkedin.com/pulse/demonstrating-bdd-behavior-driven-development-go-artur-neumann/
 package main
 
 import (
 	"encoding/json"
-	"ethiopianDateConverter/ethioGrego"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
 	"testing"
+
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 
 	"github.com/cucumber/godog"
 )
@@ -78,7 +77,7 @@ func theResponseContentShouldBe(expectedContent string) error {
 
 	}
 
-	if expectedContent != resp.Msg  && expectedContent != string(body) {
+	if expectedContent != resp.Msg && expectedContent != string(body) {
 		return fmt.Errorf("response content not as expected! Expected '%s', got '%s'", expectedContent, string(body))
 	} else {
 		return nil

@@ -1,12 +1,17 @@
+/*
+Ethiopian Calendar tool for Golang
+Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
+*/
+
 package main
 
 import (
 	"errors"
-	"ethiopianDateConverter/ethioGrego"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,13 +32,13 @@ func homePage(ctx *gin.Context) {
 	})
 }
 
+// Ethiopian to Gregorian to handler
 func getAdFromEt(ctx *gin.Context) {
 	dateString, state := ctx.Params.Get("date")
 	if state {
 		dateString = strings.TrimPrefix(dateString, "date=")
 	}
 	var splitedDate = strings.Split(dateString, "-")
-	fmt.Println(splitedDate) //for test
 	if len(splitedDate) > 3 {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"response": "not a valid date",
@@ -61,6 +66,7 @@ func getAdFromEt(ctx *gin.Context) {
 	}
 }
 
+// Gregorian to Ethiopian handler
 func getEtFromAd(ctx *gin.Context) {
 	dateString, state := ctx.Params.Get("date")
 	if state {
@@ -80,14 +86,9 @@ func getEtFromAd(ctx *gin.Context) {
 			ctx.JSON(http.StatusOK, gin.H{
 				"response": EtDate.Format("2006-01-02"),
 			})
-		}
-		if err.Error() == "not a valid date" {
+		} else {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"response": err.Error(),
-			})
-		} else {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"response": errors.New("internal server error").Error(), //this will not wrote,since the server will crashfor that request
 			})
 		}
 	}
