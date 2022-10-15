@@ -2,6 +2,8 @@ module gitlab.com/Yinebeb-01/ethiopiandateconverter
 
 go 1.19
 
+retract v0.0.0-20221007075659-cb8db99099a3
+
 require (
 	github.com/cucumber/godog v0.12.5
 	github.com/gin-gonic/gin v1.8.1
