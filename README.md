@@ -22,5 +22,9 @@ If you are newbie to golang, this project will guide and help you on testing(BDD
 
 - You can check the [python version](https://github.com/dimagi/ethiopian-date-converter)
 
+## Documentation
+   Read on [pkg.go.dev](https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiandateconverter)
+
 ## Project status
 First version, I will come soon with updates
+
