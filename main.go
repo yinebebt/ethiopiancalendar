@@ -2,7 +2,6 @@
 Ethiopian Calendar tool for Golang
 Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
 */
-
 package main
 
 import (
