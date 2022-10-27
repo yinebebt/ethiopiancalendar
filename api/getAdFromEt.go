@@ -2,8 +2,8 @@ package api
 
 import (
 	"errors"
+	"github.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 	"net/http"
 	"strconv"
 	"strings"
