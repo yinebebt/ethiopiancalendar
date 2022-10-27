@@ -5,90 +5,45 @@ Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
 package main
 
 import (
-	"errors"
-	"net/http"
-	"strconv"
-	"strings"
-
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
-
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/api"
+	docs "gitlab.com/Yinebeb-01/ethiopiandateconverter/docs"
 )
 
+// @title           Swagger API
+// @version         1.0
+// @description     This is a sample swagger server.
+// @termsOfService  http://swagger.io/terms/
+// @contact.name   API Support
+// @contact.url    http://www.swagger.io/support
+// @contact.email  support@swagger.io
+// @license.name  Apache 2.0
+// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
+// @host      localhost:8080
+// @BasePath  /api/v1
+// @securityDefinitions.basic  BasicAuth
 func main() {
-	router := gin.Default()
+	// programmatically set swagger info
+	//docs.SwaggerInfo.Title = "Swagger Example API"
+	//docs.SwaggerInfo.Description = "This is a sample server Petstore server."
+	//docs.SwaggerInfo.Version = "1.0"
+	//docs.SwaggerInfo.Host = "petstore.swagger.io"
+	//docs.SwaggerInfo.BasePath = "api/v1"
+	//docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
-	router.GET("/", homePage)
-	router.GET("/ad-from-et/:date", getAdFromEt)
-	router.GET("/et-from-ad/:date", getEtFromAd)
+	router := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
+
+	v1 := router.Group(docs.SwaggerInfo.BasePath)
+	{
+		v1.GET("/", api.HomePage)
+		v1.GET("/ad-from-et/:date", api.GetAdFromEt)
+		v1.GET("/et-from-ad/:date", api.GetEtFromAd)
+	}
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	router.Run(":8080")
-}
-
-func homePage(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"Message": "EthioGrego Server",
-	})
-}
-
-// Ethiopian to Gregorian to handler
-func getAdFromEt(ctx *gin.Context) {
-	dateString, state := ctx.Params.Get("date")
-	if state {
-		dateString = strings.TrimPrefix(dateString, "date=")
-	}
-	var splitedDate = strings.Split(dateString, "-")
-	if len(splitedDate) > 3 {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"response": "not a valid date",
-		})
-	} else {
-		day, _ := strconv.Atoi(splitedDate[2])
-		month, _ := strconv.Atoi(splitedDate[1])
-		year, _ := strconv.Atoi(splitedDate[0])
-
-		date, err := ethioGrego.To_gregorian(year, month, day)
-		if err == nil {
-			ctx.JSON(http.StatusOK, gin.H{
-				"response": date.Format("2006-01-02"),
-			})
-		}
-		if err.Error() == "not a valid date" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"response": err.Error(),
-			})
-		} else {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"response": errors.New("internal server error"),
-			})
-		}
-	}
-}
-
-// Gregorian to Ethiopian handler
-func getEtFromAd(ctx *gin.Context) {
-	dateString, state := ctx.Params.Get("date")
-	if state {
-		dateString = strings.TrimPrefix(dateString, "date=")
-	}
-	var splitedDate = strings.Split(dateString, "-")
-	if len(splitedDate) > 3 {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"response": "not a valid date",
-		})
-	} else {
-		day, _ := strconv.Atoi(splitedDate[2])
-		month, _ := strconv.Atoi(splitedDate[1])
-		year, _ := strconv.Atoi(splitedDate[0])
-		EtDate, err := ethioGrego.To_ethiopian(year, month, day)
-		if err == nil {
-			ctx.JSON(http.StatusOK, gin.H{
-				"response": EtDate.Format("2006-01-02"),
-			})
-		} else {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-				"response": err.Error(),
-			})
-		}
-	}
 }
