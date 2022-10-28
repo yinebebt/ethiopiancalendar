@@ -5,11 +5,11 @@ Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
 package main
 
 import (
-	"github.com/Yinebeb-01/ethiopiandateconverter/api"
-	docs "github.com/Yinebeb-01/ethiopiandateconverter/docs"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/api"
+	docs "gitlab.com/Yinebeb-01/ethiopiandateconverter/docs"
 )
 
 // @title           Swagger API

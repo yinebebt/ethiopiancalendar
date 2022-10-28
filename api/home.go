@@ -9,9 +9,8 @@ import (
 // @Summary      Home page
 // @Description  Home_page
 // @Tags         homepage
-// @Accept       json
 // @Produce      json
-// @Success      200  {object}  json
+// @Success      200  {object}  map[string]any
 // @Failure      400  {object}  error
 // @Failure      404  {object}  error
 // @Failure      500  {object}  error

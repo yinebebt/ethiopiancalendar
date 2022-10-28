@@ -1,4 +1,4 @@
-module github.com/Yinebeb-01/ethiopiandateconverter
+module gitlab.com/Yinebeb-01/ethiopiandateconverter
 
 go 1.19
 

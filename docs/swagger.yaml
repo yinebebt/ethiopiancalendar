@@ -13,6 +13,29 @@ info:
   title: Swagger API
   version: "1.0"
 paths:
+  /:
+    get:
+      description: Home_page
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Home page
+      tags:
+      - homepage
   /ad-from-et/{date}:
     get:
       consumes:

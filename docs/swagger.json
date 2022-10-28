@@ -18,6 +18,39 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
+        "/": {
+            "get": {
+                "description": "Home_page",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "homepage"
+                ],
+                "summary": "Home page",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/ad-from-et/{date}": {
             "get": {
                 "description": "get string by date",
