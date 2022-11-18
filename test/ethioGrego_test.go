@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"encoding/json"
@@ -9,9 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
-
 	"github.com/cucumber/godog"
+	ethioGrego2 "gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 )
 
 var host = "http://localhost:8080"
@@ -32,11 +31,11 @@ func TestEthiopianDate(t *testing.T) {
 	ethiopianDate := "2015-01-18 00:00:00 +0000 UTC"
 	gregorianDate := "2022-09-28 00:00:00 +0000 UTC"
 
-	time, err := ethioGrego.To_ethiopian(2022, 9, 28)
+	time, err := ethioGrego2.To_ethiopian(2022, 9, 28)
 	if err == nil {
 		expectedEthio = time.String()
 	}
-	time, err = ethioGrego.To_gregorian(2015, 1, 18)
+	time, err = ethioGrego2.To_gregorian(2015, 1, 18)
 	if err == nil {
 		expectedGrego = time.String()
 	}

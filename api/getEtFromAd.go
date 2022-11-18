@@ -1,11 +1,12 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 )
 
 // Show EtToAd godoc
