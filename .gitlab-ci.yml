@@ -15,10 +15,6 @@ stages:
 test:
   extends: .go-cache
   stage: test
-  services:
-    - name: cockroachdb/cockroach:latest
-      alias: db
-      command: ["start-single-node", "--insecure"]
   tags:
     - gitlab-runner
   script:
