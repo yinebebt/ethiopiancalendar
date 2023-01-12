@@ -14,7 +14,6 @@ stages:
 
 test:
   extends: .go-cache
-  stage: test
   tags:
     - gitlab-runner
   script:
