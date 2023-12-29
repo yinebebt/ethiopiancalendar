@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
+	"github.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
 
 	"github.com/cucumber/godog"
 )
