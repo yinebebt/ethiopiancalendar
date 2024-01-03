@@ -7,10 +7,10 @@ import (
 	"time"
 )
 
-// Ethiopian date string representation of provided Gregorian date
-func To_ethiopian(year, month, date int) (time.Time, error) {
-	var tahissas int
-	var ethiopian_date int
+// ToEthiopian gives Ethiopian date string representation of provided Gregorian date
+func ToEthiopian(year, month, date int) (time.Time, error) {
+	var december int
+	var ethiopianDate int
 	var dateResult string
 
 	if !isValid(year, month, date) {
@@ -25,77 +25,77 @@ func To_ethiopian(year, month, date int) (time.Time, error) {
 
 	// Number of days in gregorian months starting with January (index 1)
 	//	Index 0 is reserved for leap years switches.
-	gregorian_months := []int{0, 31, 28, 31, 30, 31, 30,
+	gregorianMonths := []int{0, 31, 28, 31, 30, 31, 30,
 		31, 31, 30, 31, 30, 31}
 
-	ethiopian_months := []int{0, 30, 30, 30, 30, 30, 30, 30,
+	ethiopianMonths := []int{0, 30, 30, 30, 30, 30, 30, 30,
 		30, 30, 5, 30, 30, 30, 30}
 
 	//  if gregorian leap year, February has 29 days.
 	if (year%4 == 0 && year%100 != 0) || year%400 == 0 {
-		gregorian_months[2] = 29
+		gregorianMonths[2] = 29
 	}
 	//  September sees 8y difference
-	ethiopian_year := year - 8
+	ethiopianYear := year - 8
 
 	//  if ethiopian leap year pagumain has 6 days
-	if ethiopian_year%4 == 3 {
-		ethiopian_months[10] = 6
+	if ethiopianYear%4 == 3 {
+		ethiopianMonths[10] = 6
 	} else {
-		ethiopian_months[10] = 5
+		ethiopianMonths[10] = 5
 	}
 	//  Ethiopian new year in Gregorian calendar
-	new_year_day := start_day_of_ethiopian(year - 8)
+	newYearDay := startDayOfEthiopian(year - 8)
 
 	// calculate number of days up to that date
 	until := 0
 	for i := 1; i < month; i++ {
-		until += gregorian_months[i]
+		until += gregorianMonths[i]
 	}
 	until += date
 
-	// # update tahissas (december) to match january 1st
-	if ethiopian_year%4 == 0 {
-		tahissas = 26
+	// # update december to match january 1st
+	if ethiopianYear%4 == 0 {
+		december = 26
 	} else {
-		tahissas = 25
+		december = 25
 	}
 
 	// take into account the 1582 change
 	if year < 1582 {
-		ethiopian_months[1] = 0
-		ethiopian_months[2] = tahissas
+		ethiopianMonths[1] = 0
+		ethiopianMonths[2] = december
 	} else if until <= 277 && year == 1582 {
-		ethiopian_months[1] = 0
-		ethiopian_months[2] = tahissas
+		ethiopianMonths[1] = 0
+		ethiopianMonths[2] = december
 	} else {
-		tahissas = new_year_day - 3
-		ethiopian_months[1] = tahissas
+		december = newYearDay - 3
+		ethiopianMonths[1] = december
 	}
 	// calculate month and date incremently
 	m := 0
-	for m = range ethiopian_months {
-		if until <= ethiopian_months[m] {
-			if m == 1 || ethiopian_months[m] == 0 {
-				ethiopian_date = until + (30 - tahissas)
+	for m = range ethiopianMonths {
+		if until <= ethiopianMonths[m] {
+			if m == 1 || ethiopianMonths[m] == 0 {
+				ethiopianDate = until + (30 - december)
 			} else {
-				ethiopian_date = until
+				ethiopianDate = until
 			}
 			break
 		} else {
-			until -= ethiopian_months[m]
+			until -= ethiopianMonths[m]
 		}
 	}
 	//  if m > 4, we're already on next Ethiopian year
 	if m > 10 {
-		ethiopian_year += 1
+		ethiopianYear += 1
 	}
 	// Ethiopian months ordered according to Gregorian
 	order := []int{0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4}
-	ethiopian_month := order[m]
+	ethiopianMonth := order[m]
 
-	da := strconv.Itoa(ethiopian_date)
-	mon := strconv.Itoa(ethiopian_month)
+	da := strconv.Itoa(ethiopianDate)
+	mon := strconv.Itoa(ethiopianMonth)
 	if len(da) == 1 {
 		da = "0" + da
 	}
@@ -103,10 +103,10 @@ func To_ethiopian(year, month, date int) (time.Time, error) {
 		mon = "0" + mon
 	}
 
-	dateResult = strconv.Itoa(ethiopian_year) + "-" + mon + "-" + da
+	dateResult = strconv.Itoa(ethiopianYear) + "-" + mon + "-" + da
 	res, err := time.Parse("2006-01-02", dateResult)
 	if err != nil {
-		fmt.Print("unabe to parse dateResult.", err) //for debugging purpose
+		fmt.Print("unable to parse dateResult.", err)
 		return time.Time{}, errors.New("not a valid date")
 	}
 	return res, nil
