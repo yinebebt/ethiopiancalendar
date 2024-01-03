@@ -27,17 +27,17 @@ func GetAdFromEt(ctx *gin.Context) {
 	if state {
 		dateString = strings.TrimPrefix(dateString, "date=")
 	}
-	var splitedDate = strings.Split(dateString, "-")
-	if len(splitedDate) > 3 {
+	var splitDate = strings.Split(dateString, "-")
+	if len(splitDate) > 3 {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"response": "not a valid date",
 		})
 	} else {
-		day, _ := strconv.Atoi(splitedDate[2])
-		month, _ := strconv.Atoi(splitedDate[1])
-		year, _ := strconv.Atoi(splitedDate[0])
+		day, _ := strconv.Atoi(splitDate[2])
+		month, _ := strconv.Atoi(splitDate[1])
+		year, _ := strconv.Atoi(splitDate[0])
 
-		date, err := ethioGrego.To_gregorian(year, month, day)
+		date, err := ethioGrego.ToGregorian(year, month, day)
 		if err == nil {
 			ctx.JSON(http.StatusOK, gin.H{
 				"response": date.Format("2006-01-02"),
