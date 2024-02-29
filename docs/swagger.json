@@ -1,31 +1,31 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample swagger server.",
-        "title": "Swagger API",
-        "termsOfService": "http://swagger.io/terms/",
+        "description": "Ethiopian to Gregorian date converter server.",
+        "title": "EthioGrego",
+        "termsOfService": "https://st-son.com/terms/",
         "contact": {
             "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "url": "https://st-son.com/support",
+            "email": "support@st-son.com"
         },
         "license": {
             "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
-    "basePath": "/api/v1",
+    "host": "calendar.st-son.com",
+    "basePath": "/v1",
     "paths": {
         "/": {
             "get": {
-                "description": "Home_page",
+                "description": "Home Page",
                 "produces": [
-                    "application/json"
+                    "text/html"
                 ],
                 "tags": [
-                    "homepage"
+                    "Date-Converter"
                 ],
                 "summary": "Home page",
                 "responses": {
@@ -51,9 +51,9 @@
                 }
             }
         },
-        "/ad-from-et/{date}": {
+        "/ad-to-et/{date}": {
             "get": {
-                "description": "get string by date",
+                "description": "Get ethiopian date string from gregorian date",
                 "consumes": [
                     "application/json"
                 ],
@@ -61,9 +61,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "AdToEt"
+                    "Date-Conversion"
                 ],
-                "summary": "Convert date",
+                "summary": "Gregorian to Ethiopian",
                 "parameters": [
                     {
                         "type": "string",
@@ -95,9 +95,9 @@
                 }
             }
         },
-        "/et-from-ad/{date}": {
+        "/et-to-ad/{date}": {
             "get": {
-                "description": "get string by date",
+                "description": "Get gregorian date string from ethiopian date",
                 "consumes": [
                     "application/json"
                 ],
@@ -105,9 +105,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "EtToAd"
+                    "Date-Conversion"
                 ],
-                "summary": "Convert date",
+                "summary": "Ethiopian to Gregorian",
                 "parameters": [
                     {
                         "type": "string",

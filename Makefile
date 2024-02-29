@@ -7,4 +7,8 @@ test:
 run:
 	go run ./cmd/main.go
 
-.PHONY: swag test run
+build:
+	rm app
+	go build -o app ./cmd/main.go
+
+.PHONY: swag test run build
