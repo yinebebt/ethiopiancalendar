@@ -1,34 +1,76 @@
-# ethiopianDateConverter
+<p align="center">
+<img src="internal/assets/logo_medium.png" alt="logo" width="110" height="110">
+</p>
+<h1 align="center"><a href="https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiandateconverter">Ethiopian Date Converter</a></h1>
 
 ## Description
-This mini-project s used mainly to convert Ethiopian date(yy-mm-dd) into Gregorian and vise versa. 
-Ethiopia has its own calander, having 13 months and always have 30 days within a month.
-Anybody can use this api; it has easy to use, simply by sending the date along the predefined endpoints,one can get the date as a JSON response.
-* [wikipedia](https://en.wikipedia.org/wiki/Ethiopian_calendar)
+The Ethiopian Date Converter API is designed to facilitate the conversion between Ethiopian dates
+(in the format yy-mm-dd) and Gregorian dates. Ethiopia follows its own calendar system, which consists of 13 months,
+each with 30 days. 
 
-### contents 
-If you are newbie to golang, this project will guide and help you on testing(BDD-with Godog), using gin webframwork and more.
+### Functionality
+This API allows users to:
+* Convert Ethiopian dates to Gregorian dates.
+* Convert Gregorian dates to Ethiopian dates.
+
+### Usage
+To utilize the API, simply send a date using the specified endpoints. The API will respond with the converted date 
+in JSON format.
+
+#### Example Usage
+
+1. Convert Gregorian Date to Ethiopian Date
+
+```curl
+GET /ad-to-et/{date}
+```
+
+* Parameters:
+
+    `date:` The Gregorian date to convert (in _yy-mm-dd_ format).
+
+**Example**:
+
+```curl
+GET /ad-to-et/2013-09-11
+```
+
+Response:
+
+```json
+{
+"gregorian_date": "2021-05-22"
+}
+```
+
+2. Convert Gregorian Date to Ethiopian Date
+
+```curl
+GET /et-to-ad/{date}
+```
+
+* Parameters:
+
+    `date:` The Ethiopia date to convert (in _yy-mm-dd_ format).
+
+**Example**:
+```curl
+GET /et-to-ad/2021-05-22
+```
+Response:
+```json
+{
+"ethiopian_date": "2013-09-11"
+}
+```
 
 ## Installation
 
-1. install using below go command:
-```bash 
-    go get gitlab.com/Yinebeb-01/ethiopiandateconverter
+Install using below go command:
+```bash
+go get gitlab.com/Yinebeb-01/ethiopiandateconverter
 ```
 
-2. import onto your project code
-```bash 
-    import "gitlab.com/Yinebeb-01/ethiopiandateconverter"
-```
-
-## Authors and acknowledgment
-- [Yinebeb T.](https://gitlab.com/Yinebeb-01/)
-
-- You can check the [python version](https://github.com/dimagi/ethiopian-date-converter)
-
-## Documentation
-   Read on [pkg.go.dev](https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiandateconverter)
-
-## Project status
-First version | for learning purpose
-
+## Author
+- [Yinebeb T.](https://github.com/Yinebeb-01/)
+- [python version](https://github.com/dimagi/ethiopian-date-converter)

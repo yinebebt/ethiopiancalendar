@@ -1,22 +1,16 @@
 package ethioGrego
 
-type response struct {
-	msg string
-}
-
-// returns first day of that Ethiopian year
-func start_day_of_ethiopian(year int) int {
+func startDayOfEthiopian(year int) int {
 	//magic formula gives start of year
-	new_year_day := (year / 100) - (year / 400) - 4
+	newYearDay := (year / 100) - (year / 400) - 4
 
-	//if the prev ethiopian year is a leap year, new-year occrus on 12th
+	// if the prev ethiopian year is a leap year, new-year occurs on 12th
 	if (year-1)%4 == 3 {
-		new_year_day += 1
+		newYearDay += 1
 	}
-	return new_year_day
+	return newYearDay
 }
 
-// prevent incorect input
 func isValid(year, month, date int) bool {
 	inputs := []int{year, month, date}
 	for i := range inputs {
