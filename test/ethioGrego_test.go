@@ -1,28 +1,23 @@
-package main
+package test
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/spf13/viper"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
 	"testing"
 
-	"github.com/Yinebeb-01/ethiopiandateconverter/ethioGrego"
-
+	"github.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 	"github.com/cucumber/godog"
 )
-
-var host = "http://localhost:8080"
 
 var res *http.Response
 
 type response struct {
 	Msg string `json:"response"`
-}
-type notFound struct {
-	Msg string
 }
 
 var expectedEthio, expectedGrego string
@@ -32,11 +27,11 @@ func TestEthiopianDate(t *testing.T) {
 	ethiopianDate := "2015-01-18 00:00:00 +0000 UTC"
 	gregorianDate := "2022-09-28 00:00:00 +0000 UTC"
 
-	time, err := ethioGrego.ToEthiopian(2022, 9, 28)
+	time, err := ethioGrego.Ethiopian(2022, 9, 28)
 	if err == nil {
 		expectedEthio = time.String()
 	}
-	time, err = ethioGrego.ToGregorian(2015, 1, 18)
+	time, err = ethioGrego.Gregorian(2015, 1, 18)
 	if err == nil {
 		expectedGrego = time.String()
 	}
@@ -45,12 +40,11 @@ func TestEthiopianDate(t *testing.T) {
 	}
 }
 
-//feature file steps definition- BDD
-
+// feature file steps definition
 // sending a request
 func aRequestIsSentToTheEndpoint(method, endpoint string) error {
 	var reader = strings.NewReader("")
-	var request, err = http.NewRequest(method, host+endpoint, reader)
+	var request, err = http.NewRequest(method, viper.GetString("server.host")+endpoint, reader)
 	if err != nil {
 		return fmt.Errorf("could not create request %s", err.Error())
 	}

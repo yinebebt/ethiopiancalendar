@@ -1,23 +1,46 @@
-basePath: /api/v1
-host: localhost:8080
+basePath: /v1
+host: calendar.st-son.com
 info:
   contact:
-    email: support@swagger.io
+    email: support@st-son.com
     name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample swagger server.
+    url: https://st-son.com/support
+  description: Ethiopian to Gregorian date converter server.
   license:
     name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger API
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://st-son.com/terms/
+  title: EthioGrego
   version: "1.0"
 paths:
-  /ad-from-et/{date}:
+  /:
+    get:
+      description: Home Page
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Home page
+      tags:
+      - Date-Converter
+  /ad-to-et/{date}:
     get:
       consumes:
       - application/json
-      description: get string by date
+      description: Get ethiopian date string from gregorian date
       parameters:
       - description: date
         in: path
@@ -40,14 +63,14 @@ paths:
         "500":
           description: Internal Server Error
           schema: {}
-      summary: Convert date
+      summary: Gregorian to Ethiopian
       tags:
-      - AdToEt
-  /et-from-ad/{date}:
+      - Date-Conversion
+  /et-to-ad/{date}:
     get:
       consumes:
       - application/json
-      description: get string by date
+      description: Get gregorian date string from ethiopian date
       parameters:
       - description: date
         in: path
@@ -70,9 +93,9 @@ paths:
         "500":
           description: Internal Server Error
           schema: {}
-      summary: Convert date
+      summary: Ethiopian to Gregorian
       tags:
-      - EtToAd
+      - Date-Conversion
 securityDefinitions:
   BasicAuth:
     type: basic

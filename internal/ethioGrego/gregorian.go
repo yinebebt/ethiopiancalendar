@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// ToGregorian gives Gregorian date object representation of provided Ethiopian date
-func ToGregorian(year, month, date int) (time.Time, error) {
+// Gregorian date object representation of provided Ethiopian date
+func Gregorian(year, month, date int) (time.Time, error) {
 	var gregorianDate int
 	var dateResult string
 
@@ -31,6 +31,7 @@ func ToGregorian(year, month, date int) (time.Time, error) {
 	if (nextYear%4 == 0 && nextYear%100 != 0) || nextYear%400 == 0 {
 		gregorianMonths[6] = 29
 	}
+
 	// calculate number of days up to that date
 	until := ((month - 1) * 30) + date
 	if until <= 37 && year <= 1575 { //mysterious rule
@@ -77,7 +78,7 @@ func ToGregorian(year, month, date int) (time.Time, error) {
 	dateResult = "" + strconv.Itoa(gregorianYear) + "-" + mon + "-" + da
 	res, err := time.Parse("2006-01-02", dateResult)
 	if err != nil {
-		fmt.Print("unable to parse dateResult.", err)
+		fmt.Print("unable to parse dateResult", err)
 		return time.Time{}, errors.New("not a valid date")
 	}
 	return res, nil

@@ -1,8 +1,18 @@
-stages:
-  - test
-  
+image: golang:1.19
+
+.go-cache:
+  variables:
+    GOPATH: $CI_PROJECT_DIR/.go
+  before_script:
+    - mkdir -p .go
+  cache:
+    paths:
+      - .go/pkg/mod/
+
 test:
+  extends: .go-cache
   stage: test
-  image: golang:latest
+  tags:
+    - gitlab-runner
   script:
-    - go test .
+    - go test ./...

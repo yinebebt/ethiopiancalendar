@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-// ToEthiopian gives Ethiopian date string representation of provided Gregorian date
-func ToEthiopian(year, month, date int) (time.Time, error) {
+// Ethiopian return date string representation of provided Gregorian date
+func Ethiopian(year, month, date int) (time.Time, error) {
 	var december int
 	var ethiopianDate int
 	var dateResult string
@@ -54,7 +54,7 @@ func ToEthiopian(year, month, date int) (time.Time, error) {
 	}
 	until += date
 
-	// # update december to match january 1st
+	// # update december (december) to match january 1st
 	if ethiopianYear%4 == 0 {
 		december = 26
 	} else {
@@ -72,7 +72,7 @@ func ToEthiopian(year, month, date int) (time.Time, error) {
 		december = newYearDay - 3
 		ethiopianMonths[1] = december
 	}
-	// calculate month and date incremently
+	// calculate month and date incrementally
 	m := 0
 	for m = range ethiopianMonths {
 		if until <= ethiopianMonths[m] {
@@ -106,7 +106,7 @@ func ToEthiopian(year, month, date int) (time.Time, error) {
 	dateResult = strconv.Itoa(ethiopianYear) + "-" + mon + "-" + da
 	res, err := time.Parse("2006-01-02", dateResult)
 	if err != nil {
-		fmt.Print("unable to parse dateResult.", err)
+		fmt.Print("unable to parse dateResult", err)
 		return time.Time{}, errors.New("not a valid date")
 	}
 	return res, nil
