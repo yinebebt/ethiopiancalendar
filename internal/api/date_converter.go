@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 )
 
 // Ethiopian : Gregorian to Ethiopian date converter
