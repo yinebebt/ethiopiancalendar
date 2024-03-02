@@ -101,6 +101,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/bahire-hasab/{year}": {
+            "get": {
+                "description": "Get years fasting and festival date",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bahirehasab"
+                ],
+                "summary": "Bahirehasab (ባህረ-ሐሳብ)",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "year",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/bahirehasab.Festival"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/et-to-ad/{date}": {
             "get": {
                 "description": "Get gregorian date string from ethiopian date",
@@ -142,6 +186,176 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {}
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "bahirehasab.Basic": {
+            "type": "object",
+            "properties": {
+                "abektie": {
+                    "description": "Abekti (አበቅቴ)",
+                    "type": "integer"
+                },
+                "beale_metiq": {
+                    "description": "BealeMetiq (በዓለ-መጥቅ), 1 =መስከረም፣ 2 = ጥቅምት",
+                    "type": "integer"
+                },
+                "mebaja_hamer": {
+                    "description": "MebajaHamer (መባጃ ሃመር)",
+                    "type": "integer"
+                },
+                "medeb": {
+                    "description": "Medeb (መደብ)",
+                    "type": "integer"
+                },
+                "metiq": {
+                    "description": "Metiq (መጥቅ)",
+                    "type": "integer"
+                },
+                "nenewie": {
+                    "description": "Nenewie የነነዌ ፆም የሚውልበት ቀን",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "wenber": {
+                    "description": "Wenber (ወንበር)",
+                    "type": "integer"
+                }
+            }
+        },
+        "bahirehasab.Date": {
+            "type": "object",
+            "properties": {
+                "dateOfTheMonth": {
+                    "type": "integer"
+                },
+                "monthOfTheYear": {
+                    "type": "integer"
+                }
+            }
+        },
+        "bahirehasab.Fasting": {
+            "type": "object",
+            "properties": {
+                "abiy": {
+                    "description": "Abiy tsome (አብይ ፆም)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "debrezeit": {
+                    "description": "DebreZeit ደብረ ዘይት",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "dihnet": {
+                    "description": "Dihnet (ፆመ ድህነት), Wednesday and Friday Weekly fast",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "erget": {
+                    "description": "Erget (እርገት)፣ Ascension",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "hawariyat": {
+                    "description": "Hawariyat ( ፆመ ሐዋሪያት), fast of the Holy Apostles",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "hosanna": {
+                    "description": "Hosanna ሆሳህና",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "peraklitos": {
+                    "description": "Peraklitos (ጰራቅሊጦስ)፣ Paraclete",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "rkbekahnat": {
+                    "description": "RkbeKahnat (ርክበ ካህናት)",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "siklet": {
+                    "description": "Siklet (ስቅለት), Good Friday",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                },
+                "tinsaye": {
+                    "description": "Tinsaye (ፋሲካ), resurrection",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/bahirehasab.Date"
+                        }
+                    ]
+                }
+            }
+        },
+        "bahirehasab.Festival": {
+            "type": "object",
+            "properties": {
+                "basic": {
+                    "$ref": "#/definitions/bahirehasab.Basic"
+                },
+                "fasting": {
+                    "$ref": "#/definitions/bahirehasab.Fasting"
+                },
+                "year": {
+                    "$ref": "#/definitions/bahirehasab.Year"
+                }
+            }
+        },
+        "bahirehasab.Year": {
+            "type": "object",
+            "properties": {
+                "day_of_the_week": {
+                    "description": "DayOfTheWeek the day in which new year fall",
+                    "type": "string"
+                },
+                "evangelist": {
+                    "description": "Evangelist ወንጌላዊው in name",
+                    "type": "string"
+                },
+                "evangelist_num": {
+                    "description": "EvangelistNum (Evangelist) ወንጌላዊው in number",
+                    "type": "integer"
+                },
+                "year": {
+                    "description": "Year in Ethiopian calendar",
+                    "type": "integer"
                 }
             }
         }

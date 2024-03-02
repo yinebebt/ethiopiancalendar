@@ -40,6 +40,7 @@ func main() {
 		v1.GET("", api2.HomePage)
 		v1.GET("/et-to-ad/:date", api2.Gregorian)
 		v1.GET("/ad-to-et/:date", api2.Ethiopian)
+		v1.GET("/bahire-hasab/:year", api2.BahireHasab)
 
 		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}

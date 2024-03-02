@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
+	"gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/module/ethioGrego"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -11,7 +12,6 @@ import (
 	"testing"
 
 	"github.com/cucumber/godog"
-	ethioGrego2 "gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 )
 
 var res *http.Response
@@ -27,11 +27,11 @@ func TestEthiopianDate(t *testing.T) {
 	ethiopianDate := "2015-01-18 00:00:00 +0000 UTC"
 	gregorianDate := "2022-09-28 00:00:00 +0000 UTC"
 
-	time, err := ethioGrego2.Ethiopian(2022, 9, 28)
+	time, err := ethioGrego.Ethiopian(2022, 9, 28)
 	if err == nil {
 		expectedEthio = time.String()
 	}
-	time, err = ethioGrego2.Gregorian(2015, 1, 18)
+	time, err = ethioGrego.Gregorian(2015, 1, 18)
 	if err == nil {
 		expectedGrego = time.String()
 	}

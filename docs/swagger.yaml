@@ -1,4 +1,104 @@
 basePath: /v1
+definitions:
+  bahirehasab.Basic:
+    properties:
+      abektie:
+        description: Abekti (አበቅቴ)
+        type: integer
+      beale_metiq:
+        description: BealeMetiq (በዓለ-መጥቅ), 1 =መስከረም፣ 2 = ጥቅምት
+        type: integer
+      mebaja_hamer:
+        description: MebajaHamer (መባጃ ሃመር)
+        type: integer
+      medeb:
+        description: Medeb (መደብ)
+        type: integer
+      metiq:
+        description: Metiq (መጥቅ)
+        type: integer
+      nenewie:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Nenewie የነነዌ ፆም የሚውልበት ቀን
+      wenber:
+        description: Wenber (ወንበር)
+        type: integer
+    type: object
+  bahirehasab.Date:
+    properties:
+      dateOfTheMonth:
+        type: integer
+      monthOfTheYear:
+        type: integer
+    type: object
+  bahirehasab.Fasting:
+    properties:
+      abiy:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Abiy tsome (አብይ ፆም)
+      debrezeit:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: DebreZeit ደብረ ዘይት
+      dihnet:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Dihnet (ፆመ ድህነት), Wednesday and Friday Weekly fast
+      erget:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Erget (እርገት)፣ Ascension
+      hawariyat:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Hawariyat ( ፆመ ሐዋሪያት), fast of the Holy Apostles
+      hosanna:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Hosanna ሆሳህና
+      peraklitos:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Peraklitos (ጰራቅሊጦስ)፣ Paraclete
+      rkbekahnat:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: RkbeKahnat (ርክበ ካህናት)
+      siklet:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Siklet (ስቅለት), Good Friday
+      tinsaye:
+        allOf:
+        - $ref: '#/definitions/bahirehasab.Date'
+        description: Tinsaye (ፋሲካ), resurrection
+    type: object
+  bahirehasab.Festival:
+    properties:
+      basic:
+        $ref: '#/definitions/bahirehasab.Basic'
+      fasting:
+        $ref: '#/definitions/bahirehasab.Fasting'
+      year:
+        $ref: '#/definitions/bahirehasab.Year'
+    type: object
+  bahirehasab.Year:
+    properties:
+      day_of_the_week:
+        description: DayOfTheWeek the day in which new year fall
+        type: string
+      evangelist:
+        description: Evangelist ወንጌላዊው in name
+        type: string
+      evangelist_num:
+        description: EvangelistNum (Evangelist) ወንጌላዊው in number
+        type: integer
+      year:
+        description: Year in Ethiopian calendar
+        type: integer
+    type: object
 host: calendar.st-son.com
 info:
   contact:
@@ -66,6 +166,36 @@ paths:
       summary: Gregorian to Ethiopian
       tags:
       - Date-Conversion
+  /bahire-hasab/{year}:
+    get:
+      consumes:
+      - application/json
+      description: Get years fasting and festival date
+      parameters:
+      - description: year
+        in: path
+        name: year
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/bahirehasab.Festival'
+        "400":
+          description: Bad Request
+          schema: {}
+        "404":
+          description: Not Found
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Bahirehasab (ባህረ-ሐሳብ)
+      tags:
+      - Bahirehasab
   /et-to-ad/{date}:
     get:
       consumes:
