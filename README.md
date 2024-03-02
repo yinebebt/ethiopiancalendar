@@ -1,11 +1,11 @@
 <p align="center">
 <img src="internal/assets/logo_medium.png" alt="logo" width="110" height="110">
 </p>
-<h1 align="center"><a href="https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiandateconverter">Ethiopian Calendar (ባሐረ-ሐሳብ)</a></h1>
+<h1 align="center"><a href="https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiancalendar">Ethiopian Calendar (ባሕረ-ሐሳብ)</a></h1>
 
 ## Description
 The Ethiopian calendar(ባሕረ-ሀሳብ) is used to get Fasting and Holiday's specific date with in a year based on 
-[EOTC]()calendar. It also designed to facilitate the conversion between Ethiopian dates (in the format yy-mm-dd) and 
+[EOTC](https://www.ethiopianorthodox.org/) calendar. It also designed to facilitate the conversion between Ethiopian dates (in the format yy-mm-dd) and 
 Gregorian dates. Ethiopia follows its own calendar system, which consists of 13 months, each with 30 days. 
 
 ### Functionality
@@ -132,7 +132,8 @@ Response:
       "dihnet":{
         "DateOfTheMonth":19,
         "MonthOfTheYear":10
-      },"hawariyat":{
+      },
+      "hawariyat":{
         "DateOfTheMonth":17,
         "MonthOfTheYear":10
       },

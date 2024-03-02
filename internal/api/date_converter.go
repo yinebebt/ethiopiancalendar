@@ -2,7 +2,7 @@ package api
 
 import (
 	"errors"
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/module/ethioGrego"
+	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/ethioGrego"
 	"net/http"
 	"strconv"
 	"strings"

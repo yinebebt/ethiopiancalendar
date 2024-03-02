@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiandateconverter/internal/module/bahirehasab"
+	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/bahirehasab"
 	"net/http"
 	"strconv"
 )
