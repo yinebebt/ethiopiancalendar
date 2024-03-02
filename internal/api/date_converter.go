@@ -2,12 +2,13 @@ package api
 
 import (
 	"errors"
+
 	"net/http"
 	"strconv"
 	"strings"
 
-	"github.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 	"github.com/gin-gonic/gin"
+	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/ethioGrego"
 )
 
 // Ethiopian : Gregorian to Ethiopian date converter
@@ -24,13 +25,16 @@ import (
 // @Router       /ad-to-et/{date} [get]
 func Ethiopian(ctx *gin.Context) {
 	dateString, state := ctx.Params.Get("date")
-	if state {
-		dateString = strings.TrimPrefix(dateString, "date=")
+	if !state {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "empty date",
+		})
+		return
 	}
 	var date = strings.Split(dateString, "-")
 	if len(date) > 3 {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"response": "not a valid date",
+			"message": "not a valid date",
 		})
 		return
 	}
@@ -41,7 +45,7 @@ func Ethiopian(ctx *gin.Context) {
 	EtDate, err := ethioGrego.Ethiopian(year, month, day)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"response": err.Error(),
+			"error": err.Error(),
 		})
 		return
 	}
@@ -64,13 +68,16 @@ func Ethiopian(ctx *gin.Context) {
 // @Router       /et-to-ad/{date} [get]
 func Gregorian(ctx *gin.Context) {
 	dateString, state := ctx.Params.Get("date")
-	if state {
-		dateString = strings.TrimPrefix(dateString, "date=")
+	if !state {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"message": "empty date",
+		})
+		return
 	}
 	var date = strings.Split(dateString, "-")
 	if len(date) > 3 {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"response": "not a valid date",
+			"message": "not a valid date",
 		})
 		return
 	}
@@ -83,11 +90,11 @@ func Gregorian(ctx *gin.Context) {
 	if err != nil {
 		if err.Error() == "not a valid date" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
-				"response": err.Error(),
+				"error": err.Error(),
 			})
 		} else {
 			ctx.JSON(http.StatusInternalServerError, gin.H{
-				"response": errors.New("internal server error"),
+				"error": errors.New("internal server error"),
 			})
 		}
 		return

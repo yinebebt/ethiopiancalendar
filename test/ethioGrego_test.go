@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
+	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/ethioGrego"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 	"strings"
 	"testing"
 
-	"github.com/Yinebeb-01/ethiopiandateconverter/internal/ethioGrego"
 	"github.com/cucumber/godog"
 )
 
