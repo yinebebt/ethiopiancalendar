@@ -73,7 +73,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "date",
+                        "example": "\"2024-08-12\"",
+                        "description": "Date in yy-mm-dd format",
                         "name": "date",
                         "in": "path",
                         "required": true
@@ -117,6 +118,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "example": "\"2016\"",
                         "description": "year",
                         "name": "year",
                         "in": "path",
@@ -161,7 +163,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "date",
+                        "example": "\"2016-12-06\"",
+                        "description": "Date in yy-mm-dd format",
                         "name": "date",
                         "in": "path",
                         "required": true
@@ -231,10 +234,10 @@ const docTemplate = `{
         "bahirehasab.Date": {
             "type": "object",
             "properties": {
-                "dateOfTheMonth": {
+                "date_of_the_month": {
                     "type": "integer"
                 },
-                "monthOfTheYear": {
+                "month_of_the_year": {
                     "type": "integer"
                 }
             }
