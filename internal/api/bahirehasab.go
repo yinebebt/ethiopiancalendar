@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/bahirehasab"
+	"github.com/yinebebt/ethiopiancalendar/internal/module/bahirehasab"
 )
 
 // BahireHasab

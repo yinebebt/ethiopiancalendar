@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/spf13/viper"
-	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/ethioGrego"
+	"github.com/yinebebt/ethiopiancalendar/internal/module/ethioGrego"
 	"io/ioutil"
 	"net/http"
 	"reflect"

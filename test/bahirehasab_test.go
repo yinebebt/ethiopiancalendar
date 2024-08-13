@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/bahirehasab"
+	"github.com/yinebebt/ethiopiancalendar/internal/module/bahirehasab"
 	"testing"
 )
 

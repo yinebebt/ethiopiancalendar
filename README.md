@@ -1,7 +1,7 @@
 <p align="center">
 <img src="internal/assets/logo_medium.png" alt="logo" width="110" height="110">
 </p>
-<h1 align="center"><a href="https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiancalendar">Ethiopian Calendar (ባሕረ-ሐሳብ)</a></h1>
+<h1 align="center"><a href="https://pkg.go.dev/github.com/Yinebeb-01/ethiopiancalendar">Ethiopian Calendar (ባሕረ-ሐሳብ)</a></h1>
 
 ![build-workflow](https://github.com/Yinebeb-01/ethiopiancalendar/actions/workflows/build-and-test.yml/badge.svg)
 
@@ -161,7 +161,7 @@ Response:
 ## Installation
 Install using below go command:
 ```bash
-go get gitlab.com/yinebebt/thiopiancalendar
+go get github.com/yinebebt/thiopiancalendar
 ```
 
 ## Author

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/ethioGrego"
+	"github.com/yinebebt/ethiopiancalendar/internal/module/ethioGrego"
 )
 
 // Ethiopian : Gregorian to Ethiopian date converter

@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"gitlab.com/yinebebt/ethiopiancalendar/config"
-	docs "gitlab.com/yinebebt/ethiopiancalendar/docs"
-	api2 "gitlab.com/yinebebt/ethiopiancalendar/internal/api"
+	"github.com/yinebebt/ethiopiancalendar/config"
+	docs "github.com/yinebebt/ethiopiancalendar/docs"
+	api2 "github.com/yinebebt/ethiopiancalendar/internal/api"
 )
 
 // @title           EthioGrego
