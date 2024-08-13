@@ -47,5 +47,5 @@ func main() {
 		v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
-	router.Run(fmt.Sprintf("%v:%v", viper.GetString("server.host"), viper.GetString("server.port")))
+	router.Run(fmt.Sprintf(":%s", viper.GetString("server.port")))
 }
