@@ -9,7 +9,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o ethiocal
+RUN go build -o ethiocal cmd/main.go
 
 EXPOSE 8080
 
