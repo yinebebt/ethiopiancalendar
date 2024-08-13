@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -46,6 +47,5 @@ func main() {
 
 		v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
-
-	router.Run(fmt.Sprintf("%v:%v", viper.GetString("server.host"), viper.GetString("server.port")))
+	http.ListenAndServe(fmt.Sprintf("%v:%v", viper.GetString("server.host"), viper.GetString("server.port")), router)
 }
