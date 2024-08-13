@@ -1,5 +1,6 @@
 server:
-  host: localhost:8080
+  host:
+  port: 8080
   schemes:
     - http
     - https

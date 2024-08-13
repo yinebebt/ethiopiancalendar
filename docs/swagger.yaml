@@ -27,9 +27,9 @@ definitions:
     type: object
   bahirehasab.Date:
     properties:
-      dateOfTheMonth:
+      date_of_the_month:
         type: integer
-      monthOfTheYear:
+      month_of_the_year:
         type: integer
     type: object
   bahirehasab.Fasting:
@@ -142,7 +142,8 @@ paths:
       - application/json
       description: Get ethiopian date string from gregorian date
       parameters:
-      - description: date
+      - description: Date in yy-mm-dd format
+        example: '"2024-08-12"'
         in: path
         name: date
         required: true
@@ -173,6 +174,7 @@ paths:
       description: Get years fasting and festival date
       parameters:
       - description: year
+        example: '"2016"'
         in: path
         name: year
         required: true
@@ -202,7 +204,8 @@ paths:
       - application/json
       description: Get gregorian date string from ethiopian date
       parameters:
-      - description: date
+      - description: Date in yy-mm-dd format
+        example: '"2016-12-06"'
         in: path
         name: date
         required: true

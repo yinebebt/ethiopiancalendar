@@ -17,7 +17,9 @@
 
         h1 {
             display: inline-block;
-            vertical-align: middle;        }
+            vertical-align: middle;
+        }
+        
         p {
             margin-bottom: 20px;
         }
@@ -51,16 +53,15 @@
             background-color: #e0e0e0;
         }
 
-         /*Logo styles */
         .logo {
             display: inline-block;
-            vertical-align: middle; /* Align with text baseline */
-            margin-right: 10px; /* Adjust spacing */
+            vertical-align: middle; 
+            margin-right: 10px;
         }
 
         .logo img {
-            width: 100px; /* Adjust size as needed */
-            height: auto; /* Maintain aspect ratio */
+            width: 100px; 
+            height: auto; 
         }
     </style>
 </head>
@@ -69,11 +70,15 @@
     <div class="logo">
         <img src="assets/logo.jpeg" alt="Logo">
     </div>
-    <h1>EthioGrego API Documentation</h1>
+    <h1>EthioGrego API</h1>
     <p>Ethiopian to Gregorian date converter server.</p>
-    <p>Contact: <a href="mailto:support@st-son.com">support@st-son.com</a></p>
+    <p>Contact: <a href="mailto:yintar6@gmail.com">support@ethiocal.com</a></p>
     <p>License: <a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache 2.0</a></p>
-    <p>Terms of Service: <a href="https://st-son.com/terms/">https://st-son.com/terms/</a></p>
+    <p>
+        <a href="https://github.com/yinebebt/ethiopiancalendar" target="_blank" class="github-star">
+            ⭐ on GitHub
+        </a>
+    </p>
 
     <h2>API Endpoints</h2>
 
@@ -88,25 +93,35 @@
             <td>/v1</td>
             <td>GET</td>
             <td>Home Page</td>
-            <td><span class="tag">Date-Converter</span></td>
+            <td><span class="tag">home</span></td>
         </tr>
         <tr>
             <td>/v1/ad-to-et/{date}</td>
             <td>GET</td>
             <td>Get Ethiopian date string from Gregorian date</td>
-            <td><span class="tag">Date-Conversion</span></td>
+            <td><span class="tag">dateConversion</span></td>
         </tr>
         <tr>
             <td>/v1/et-to-ad/{date}</td>
             <td>GET</td>
             <td>Get Gregorian date string from Ethiopian date</td>
-            <td><span class="tag">Date-Conversion</span></td>
+            <td><span class="tag">dateConversion</span></td>
+        </tr>
+        <tr>
+            <td>/v1/bahire-hasab/{year}</td>
+            <td>GET</td>
+            <td>Get year's fasting and festival date</td>
+            <td><span class="tag">bahireHasab</span></td>
         </tr>
     </table>
 
-    <h2>Documentation</h2>
+    <p><strong>Note:</strong> The date path variable is in the format 'yy-mm-dd', like 2024-08-12.</p>
 
-    <p><a href="https://pkg.go.dev/gitlab.com/Yinebeb-01/ethiopiandateconverter"  target="_blank" >pkg.go.dev</a></p>
+
+    <h2>Documentation</h2>
+    <p><a href="https://ethiocal.koyeb.app/v1/swagger/index.html"  target="_blank" >Try on swagger</a></p>
+
+    <p><a href="https://pkg.go.dev/gihub.com/ethiopiancalendar"  target="_blank" >pkg.go.dev</a></p>
 
 </div>
 </body>

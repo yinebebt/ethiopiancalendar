@@ -2,7 +2,6 @@ package bahirehasab
 
 import (
 	"fmt"
-	"log"
 )
 
 // የበዓላትና የአጽዋማት ተውሳክ
@@ -40,13 +39,10 @@ func getYear(year int) Year {
 	switch wngNum {
 	case 0:
 		wngName = "ዮሐንስ(John)"
-		break
 	case 1:
 		wngName = "ማቲዎስ(Matthew)"
-		break
 	case 2:
 		wngName = "ማርቆስ(Mark)"
-		break
 	case 3:
 		wngName = "ሉቃስ(Luke)"
 	}
@@ -103,11 +99,9 @@ func getBasic(year int) Basic {
 	if metiq > 14 {
 		bealeMetq = 1
 		dayOfWeekForMtqNum = (metiq-1)%7 + tinteQemer
-		log.Printf("የዓመቱ መጥቅ የሚውለው መስከረም %v %v ነው", metiq, getDayOfTheWeek(dayOfWeekForMtqNum))
 	} else if metiq < 14 {
 		bealeMetq = 2
 		dayOfWeekForMtqNum = (metiq+29)%7 + tinteQemer
-		log.Printf("የዓመቱ መጥቅ የሚውለው ጥቅምት %v %v ነው", metiq, getDayOfTheWeek(dayOfWeekForMtqNum))
 	}
 
 	twsakOfDay := 0
@@ -131,13 +125,11 @@ func getBasic(year int) Basic {
 	mebajaHamer := metiq + twsakOfDay // የነነዌ ፆም የሚውልበት ቀን
 	nenewie := Date{}
 	if bealeMetq == 1 && mebajaHamer <= 30 {
-		log.Printf("ፆመ ነነዌ የሚውለው ጥር %v ነው", mebajaHamer)
 		nenewie = Date{
 			DateOfTheMonth: mebajaHamer,
 			MonthOfTheYear: 5,
 		}
 	} else if bealeMetq == 2 || (bealeMetq == 1 && mebajaHamer > 30) {
-		log.Printf("ፆመ ነነዌ የሚውለው የካቲት %v ነው", mebajaHamer%30)
 		nenewie = Date{
 			DateOfTheMonth: mebajaHamer,
 			MonthOfTheYear: 6,

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/ethioGrego"
+	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/ethioGrego"
 )
 
 // Ethiopian : Gregorian to Ethiopian date converter
@@ -17,7 +17,7 @@ import (
 // @Tags         Date-Conversion
 // @Accept       json
 // @Produce      json
-// @Param        date	path	string	true	"date"
+// @Param        date	path	string	true	"Date in yy-mm-dd format"  example("2024-08-12")
 // @Success      200  {object}  time.Time
 // @Failure      400  {object}  error
 // @Failure      404  {object}  error
@@ -60,7 +60,7 @@ func Ethiopian(ctx *gin.Context) {
 // @Tags         Date-Conversion
 // @Accept       json
 // @Produce      json
-// @Param        date	path	string  true  "date"
+// @Param        date	path	string  true  "Date in yy-mm-dd format"  example("2016-12-06")
 // @Success      200  {object}  time.Time
 // @Failure      400  {object}  error
 // @Failure      404  {object}  error

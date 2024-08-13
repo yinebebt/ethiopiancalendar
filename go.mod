@@ -1,4 +1,4 @@
-module gitlab.com/Yinebeb-01/ethiopiancalendar
+module gitlab.com/yinebebt/ethiopiancalendar
 
 go 1.19
 

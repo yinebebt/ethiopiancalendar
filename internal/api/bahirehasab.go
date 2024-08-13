@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"gitlab.com/Yinebeb-01/ethiopiancalendar/internal/module/bahirehasab"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	"gitlab.com/yinebebt/ethiopiancalendar/internal/module/bahirehasab"
 )
 
 // BahireHasab
@@ -13,7 +14,7 @@ import (
 // @Tags         Bahirehasab
 // @Accept       json
 // @Produce      json
-// @Param        year	path	string	true	"year"
+// @Param        year	path	string	true	"year"  example("2016")
 // @Success      200  {object}  bahirehasab.Festival
 // @Failure      400  {object}  error
 // @Failure      404  {object}  error

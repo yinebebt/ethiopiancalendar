@@ -9,8 +9,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o myapp
+RUN go build -o ethiocal
 
 EXPOSE 8080
 
-CMD ["./myapp"]
+CMD ["./ethiocal"]

@@ -20,9 +20,16 @@ This API allows users to:
 To utilize the API, simply send a date or year using the specified endpoints. For the date conversion,the API will 
 respond with the converted date in JSON format whereas for the calendar, it will respond data in a json object.
 
-#### Example Usage
+#### Documentation
 
-1. Convert Gregorian Date to Ethiopian Date
+* <p><a href="https://ethiocal.koyeb.app/v1"  target="_blank" >Overview</a></p>
+
+* <p><a href="https://ethiocal.koyeb.app/v1/swagger/index.html"  target="_blank" >Try on swagger</a></p>
+
+* <p><a href="https://pkg.go.dev/gihub.com/ethiopiancalendar"  target="_blank" >pkg.go.dev</a></p>
+
+
+v1 Convert Gregorian DOverview Ethiopian Date
 
 ```curl
 GET /ad-to-et/{date}
@@ -102,49 +109,49 @@ Response:
         "beale_metiq":2,
         "mebaja_hamer":18,
         "nenewie":{
-          "DateOfTheMonth":18,
-          "MonthOfTheYear":6
+          "date_of_the_month":18,
+          "month_of_the_year":6
         }
       },
     "fasting":{
       "abiy":{
-        "DateOfTheMonth":2,
-        "MonthOfTheYear":7
+        "date_of_the_month":2,
+        "month_of_the_year":7
       },
       "debrezeit":{
-        "DateOfTheMonth":29,
-        "MonthOfTheYear":7
+        "date_of_the_month":29,
+        "month_of_the_year":7
       },
       "hosanna":{
-        "DateOfTheMonth":20,
-        "MonthOfTheYear":8
+        "date_of_the_month":20,
+        "month_of_the_year":8
       },
       "siklet":{
-        "DateOfTheMonth":25,
-        "MonthOfTheYear":8
+        "date_of_the_month":25,
+        "month_of_the_year":8
       },
       "tinsaye":{
-        "DateOfTheMonth":27,
-        "MonthOfTheYear":8
+        "date_of_the_month":27,
+        "month_of_the_year":8
       },
       "rkbekahnat":{
-        "DateOfTheMonth":21,
-        "MonthOfTheYear":9
+        "date_of_the_month":21,
+        "month_of_the_year":9
       },
       "dihnet":{
-        "DateOfTheMonth":19,
+        "date_of_the_month":19,
         "MonthOfTheYear":10
       },
       "hawariyat":{
-        "DateOfTheMonth":17,
-        "MonthOfTheYear":10
+        "date_of_the_month":17,
+        "month_of_the_year":10
       },
       "erget":{
-        "DateOfTheMonth":6,
-        "MonthOfTheYear":10},
+        "date_of_the_month":6,
+        "month_of_the_year":10},
       "peraklitos":{
-        "DateOfTheMonth":16,
-        "MonthOfTheYear":10
+        "date_of_the_month":16,
+        "month_of_the_year":10
       }
     }
   }
@@ -154,8 +161,8 @@ Response:
 ## Installation
 Install using below go command:
 ```bash
-go get gitlab.com/Yinebeb-01/ethiopiandateconverter
+go get gitlab.com/yinebebt/thiopiancalendar
 ```
 
 ## Author
-- [Yinebeb T.](https://github.com/Yinebeb-01/)
+- [Yinebeb T.](https://github.com/yinebebt)

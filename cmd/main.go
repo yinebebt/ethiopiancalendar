@@ -5,13 +5,15 @@ Copyright (c) 2022 Yinebeb Tariku <yintar5@gmail.com>
 package main
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"gitlab.com/Yinebeb-01/ethiopiancalendar/config"
-	docs "gitlab.com/Yinebeb-01/ethiopiancalendar/docs"
-	api2 "gitlab.com/Yinebeb-01/ethiopiancalendar/internal/api"
+	"gitlab.com/yinebebt/ethiopiancalendar/config"
+	docs "gitlab.com/yinebebt/ethiopiancalendar/docs"
+	api2 "gitlab.com/yinebebt/ethiopiancalendar/internal/api"
 )
 
 // @title           EthioGrego
@@ -28,11 +30,11 @@ import (
 // @securityDefinitions.basic  BasicAuth
 func main() {
 	config.InitConfig("config/config.yaml")
+
 	docs.SwaggerInfo.Schemes = viper.GetStringSlice("server.schemes")
-	docs.SwaggerInfo.Host = viper.GetString("server.host")
+	docs.SwaggerInfo.Host = fmt.Sprintf("%v:%v", viper.GetString("server.host"), viper.GetString("server.port"))
 
 	router := gin.Default()
-	docs.SwaggerInfo.BasePath = "/v1"
 	router.Static("/assets", "./internal/assets")
 	router.StaticFile("favicon.ico", "internal/assets/favicon.ico")
 	v1 := router.Group(docs.SwaggerInfo.BasePath)
@@ -42,8 +44,8 @@ func main() {
 		v1.GET("/ad-to-et/:date", api2.Ethiopian)
 		v1.GET("/bahire-hasab/:year", api2.BahireHasab)
 
-		router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+		v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
-	router.Run(":8080")
+	router.Run(fmt.Sprintf("%v:%v", viper.GetString("server.host"), viper.GetString("server.port")))
 }
