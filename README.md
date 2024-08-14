@@ -31,7 +31,7 @@ respond with the converted date in JSON format whereas for the calendar, it will
 ## Installation
 Install using below go command:
 ```bash
-go get github.com/yinebebt/thiopiancalendar
+go get github.com/yinebebt/ethiopiancalendar
 ```
 
 ## Author
