@@ -22,9 +22,7 @@ respond with the converted date in JSON format whereas for the calendar, it will
 
 #### Documentation
 
-* <p><a href="https://ethiocal.koyeb.app/v1"  target="_blank" >Overview</a></p>
-
-* <p><a href="https://ethiocal.koyeb.app/v1/swagger/index.html"  target="_blank" >Try on swagger</a></p>
+* <p><a href="https://yinebebt.github.io/ethiopiancalendar/"  target="_blank" >Swagger-docs</a></p>
 
 * <p><a href="https://pkg.go.dev/github.com/yinebebt/ethiopiancalendar"  target="_blank" >pkg.go.dev</a></p>
 
