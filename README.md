@@ -52,7 +52,8 @@ make build    # builds both: ./ethiocal (GUI) and ./ethiocal-cli (CLI)
 ```
 
 > **Note:** Building the GUI app requires a C compiler and OpenGL headers because
-> Fyne uses CGO. On Ubuntu/Debian: `sudo apt-get install libgl1-mesa-dev xorg-dev`.
+> Fyne uses CGO. On Ubuntu/Debian:
+> `sudo apt-get install libgl1-mesa-dev xorg-dev libwayland-dev libxkbcommon-dev`.
 > macOS and Windows have these out of the box. The CLI builds with pure Go (no CGO).
 
 ## Usage
@@ -109,5 +110,3 @@ gregDate, err := dateconverter.Gregorian(2017, 5, 25)
 ## License
 
 See [LICENSE](LICENSE).
-
-
