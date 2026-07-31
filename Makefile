@@ -15,7 +15,7 @@ lint:
 run:
 	go run .
 
-# Run the CLI tool, e.g. make run-cli ARGS="convert gtoe 2024 9 11".
+# Run the CLI tool, e.g. make run-cli ARGS="convert gtoe 2024-9-11".
 run-cli:
 	go run ./cmd/ethiocal-cli $(ARGS)
 

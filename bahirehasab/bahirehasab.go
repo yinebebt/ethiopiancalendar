@@ -1,141 +1,96 @@
 package bahirehasab
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // የበዓላትና የአጽዋማት ተውሳክ
-var tewsak = map[string]int{
-	"abiy":       14,
-	"debrezeit":  41,
-	"hosahna":    62,
-	"siklet":     67,
-	"tinsaye":    69,
-	"rkbekahnat": 93,
-	"erget":      108,
-	"peraklitos": 118,
-	"hawariyat":  119,
-	"dihnet":     121,
+// https://eotcmk.org/a/የ፳፻፲፩-ዓ-ም-የአጽዋማት-ባሕረ-ሐሳባዊ/
+const (
+	offsetAbiy       = 14
+	offsetDebreZeit  = 41
+	offsetHosanna    = 62
+	offsetSiklet     = 67
+	offsetTinsaye    = 69
+	offsetRkbeKahnat = 93
+	offsetErget      = 108
+	offsetPeraklitos = 118
+	offsetHawariyat  = 119
+	offsetDihnet     = 121
+)
+
+// NewFestival computes ባሕረ ሐሳብ for the given Ethiopian year.
+func NewFestival(year int) (Festival, error) {
+	if year < 0 {
+		return Festival{}, fmt.Errorf("invalid Ethiopian year %d", year)
+	}
+	basic := getBasic(year)
+	return Festival{
+		Year:    getYear(year),
+		Basic:   basic,
+		Fasting: getFasting(basic),
+	}, nil
 }
 
 // BahireHasab computes the Ethiopian religious calendar (fasting and festival
 // dates) for the given Ethiopian year.
+//
+// Deprecated: kept for compatibility. Use NewFestival instead.
 func BahireHasab(etYear int) (Festival, error) {
-	if etYear < 0 {
-		return Festival{}, fmt.Errorf("invalid Ethiopian Year %v", etYear)
-	}
-	year := getYear(etYear)
-	basic := getBasic(etYear)
-	fasting := getFasting(etYear)
-	return Festival{
-		Year:    year,
-		Basic:   basic,
-		Fasting: fasting,
-	}, nil
+	return NewFestival(etYear)
 }
 
 func getYear(year int) Year {
-	var wngName string
 	ameteAlem := year + 5500
-	wngNum := ameteAlem % 4
-	switch wngNum {
-	case 0:
-		wngName = "ዮሐንስ(John)"
-	case 1:
-		wngName = "ማቲዎስ(Matthew)"
-	case 2:
-		wngName = "ማርቆስ(Mark)"
-	case 3:
-		wngName = "ሉቃስ(Luke)"
-	}
-	meteneRabit := (ameteAlem - wngNum) / 4
-	tinteQemer := (ameteAlem + meteneRabit) % 7
-
+	wng := Evangelist(ameteAlem % 4)
+	meteneRabit := (ameteAlem - int(wng)) / 4
+	tinteQemer := Weekday((ameteAlem + meteneRabit) % 7)
 	return Year{
-		Year:          year,
-		EvangelistNum: wngNum,
-		Evangelist:    wngName,
-		DayOfTheWeek:  getDayOfTheWeek(tinteQemer),
-	}
-}
-
-func getDayOfTheWeek(day int) string {
-	switch day {
-	case 0:
-		return "ሰኞ(Monday)"
-	case 1:
-		return "ማክሰኞ(Tuesday)"
-	case 2:
-		return "እሮብ(Wednesday)"
-	case 3:
-		return "ሃሙስ(Thursday)"
-	case 4:
-		return "አርብ(Friday)"
-	case 5:
-		return "ቅዳሜ(Saturday)"
-	case 6:
-		return "እሁድ(Sunday)"
-	default:
-		return "invalid day"
+		Year:           year,
+		Evangelist:     wng,
+		NewYearWeekday: tinteQemer,
 	}
 }
 
 func getBasic(year int) Basic {
-	wenber := 0
 	amtAlem := year + 5500
 	medeb := amtAlem % 19
+	wenber := medeb - 1
 	if medeb == 0 {
 		wenber = 18
-	} else {
-		wenber = medeb - 1
 	}
 
 	abektie := (wenber * TinteAbektie) % 30
 	metiq := (wenber * TinteMetiq) % 30
+	// (wenber*19)%30 never yields 14; a 0 remainder is day 30 (መስከረም ፴).
+	if metiq == 0 {
+		metiq = 30
+	}
 	wngNum := amtAlem % 4
 	meteneRabit := (amtAlem - wngNum) / 4
 	tinteQemer := (amtAlem + meteneRabit) % 7
 
-	var dayOfWeekForMtqNum int
-	bealeMetq := 0
+	// መጥቅ > 14 → መስከረም; መጥቅ < 14 → ጥቅምት. Equality with 14 is unreachable.
+	var beale BealeMetiq
+	var dayOfWeekForMtq int
 	if metiq > 14 {
-		bealeMetq = 1
-		dayOfWeekForMtqNum = (metiq-1)%7 + tinteQemer
-	} else if metiq < 14 {
-		bealeMetq = 2
-		dayOfWeekForMtqNum = (metiq+29)%7 + tinteQemer
+		beale = BealeMetiqMeskerem
+		dayOfWeekForMtq = ((metiq-1)%7 + tinteQemer) % 7
+	} else {
+		beale = BealeMetiqTikimt
+		dayOfWeekForMtq = ((metiq+29)%7 + tinteQemer) % 7
 	}
 
-	twsakOfDay := 0
-	switch dayOfWeekForMtqNum {
-	case 0:
-		twsakOfDay = monday
-	case 1:
-		twsakOfDay = tuesday
-	case 2:
-		twsakOfDay = wednesday
-	case 3:
-		twsakOfDay = thursday
-	case 4:
-		twsakOfDay = friday
-	case 5:
-		twsakOfDay = saturday
-	case 6:
-		twsakOfDay = sunday
-	}
+	twsakOfDay := weekdayTewsak[dayOfWeekForMtq]
+	mebajaHamer := metiq + twsakOfDay
 
-	mebajaHamer := metiq + twsakOfDay // የነነዌ ፆም የሚውልበት ቀን
-	nenewie := Date{}
-	if bealeMetq == 1 && mebajaHamer <= 30 {
-		nenewie = Date{
-			DateOfTheMonth: mebajaHamer,
-			MonthOfTheYear: 5,
+	var nenewie Date
+	if beale == BealeMetiqMeskerem && mebajaHamer <= 30 {
+		nenewie = Date{Day: mebajaHamer, Month: Tir}
+	} else {
+		day := mebajaHamer % 30
+		if day == 0 {
+			day = 30
 		}
-	} else if bealeMetq == 2 || bealeMetq == 1 {
-		nenewie = Date{
-			DateOfTheMonth: mebajaHamer % 30,
-			MonthOfTheYear: 6,
-		}
+		nenewie = Date{Day: day, Month: Yekatit}
 	}
 
 	return Basic{
@@ -143,37 +98,35 @@ func getBasic(year int) Basic {
 		Wenber:      wenber,
 		Abektie:     abektie,
 		Metiq:       metiq,
-		BealeMetiq:  bealeMetq,
+		BealeMetiq:  beale,
 		MebajaHamer: mebajaHamer,
 		Nenewie:     nenewie,
 	}
 }
 
-func getFasting(etYear int) Fasting {
-	basic := getBasic(etYear)
-	fastingMap := map[string]Date{}
-	for name, val := range tewsak {
-		daySum, offset := 0, 0
-		daySum = basic.Nenewie.DateOfTheMonth + val
-		offset = (daySum - (daySum % 30)) / 30
-		date := Date{
-			DateOfTheMonth: daySum % 30,
-			MonthOfTheYear: basic.Nenewie.MonthOfTheYear + offset,
-		}
-		fastingMap[name] = date
+func getFasting(b Basic) Fasting {
+	n := b.Nenewie
+	return Fasting{
+		Abiy:       n.AddDays(offsetAbiy),
+		DebreZeit:  n.AddDays(offsetDebreZeit),
+		Hosanna:    n.AddDays(offsetHosanna),
+		Siklet:     n.AddDays(offsetSiklet),
+		Tinsaye:    n.AddDays(offsetTinsaye),
+		RkbeKahnat: n.AddDays(offsetRkbeKahnat),
+		Erget:      n.AddDays(offsetErget),
+		Peraklitos: n.AddDays(offsetPeraklitos),
+		Hawariyat:  n.AddDays(offsetHawariyat),
+		Dihnet:     n.AddDays(offsetDihnet),
+		Nebiyat:    Date{Day: 15, Month: Hidar},
+		Filseta:    Date{Day: 1, Month: Nehase},
+		Gehad:      gehad(timket),
 	}
+}
 
-	fasting := Fasting{}
-	fasting.Abiy = fastingMap["abiy"]
-	fasting.DebreZeit = fastingMap["debrezeit"]
-	fasting.Hosanna = fastingMap["hosahna"]
-	fasting.Siklet = fastingMap["siklet"]
-	fasting.Tinsaye = fastingMap["tinsaye"]
-	fasting.RkbeKahnat = fastingMap["rkbekahnat"]
-	fasting.Erget = fastingMap["erget"]
-	fasting.Peraklitos = fastingMap["peraklitos"]
-	fasting.Hawariyat = fastingMap["hawariyat"]
-	fasting.Dihnet = fastingMap["dihnet"]
+// timket is ጥምቀት (Tir 11); its eve is ጾመ ገሀድ.
+var timket = Date{Day: 11, Month: Tir}
 
-	return fasting
+// gehad is the day before a timket.
+func gehad(feast Date) Date {
+	return feast.AddDays(-1)
 }

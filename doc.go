@@ -6,15 +6,14 @@
 //
 //	ethiocal
 //
-// # CLI and HTTP server
+// # CLI
 //
-// Terminal and REST access live in the companion command at ./cmd/ethiocal-cli,
+// Terminal access lives in the companion command at ./cmd/ethiocal-cli,
 // built separately so the GUI app carries no CLI dependencies.
 //
 //	ethiocal-cli bahir 2017
-//	ethiocal-cli convert gtoe 2025 2 2
-//	ethiocal-cli convert etog 2017 5 25
-//	ethiocal-cli --server
+//	ethiocal-cli convert gtoe 2025-2-2
+//	ethiocal-cli convert etog 2017-5-25
 //
 // # Libraries
 //

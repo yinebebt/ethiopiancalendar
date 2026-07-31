@@ -1,17 +1,13 @@
 package gui
 
 import (
-	"fmt"
 	"net/url"
-	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-
-	"github.com/yinebebt/ethiocal/dateconverter"
 )
 
 // Run starts the GUI application.
@@ -19,30 +15,23 @@ func Run() {
 	a := app.New()
 	a.Settings().SetTheme(&ethioTheme{})
 
-	title := windowTitle()
+	title := "Ethiocal — Ethiopian Calendar"
 	w := a.NewWindow(title)
 	w.Resize(fyne.NewSize(600, 700))
 
+	homeTab := newHomeTab()
 	converterTab := newConverterTab()
 	bahirTab := newBahirTab()
 
 	tabs := container.NewAppTabs(
+		container.NewTabItemWithIcon("Home", theme.HomeIcon(), homeTab),
 		container.NewTabItemWithIcon("Date Converter", theme.HistoryIcon(), converterTab),
 		container.NewTabItemWithIcon("Bahire-Hasab", theme.ListIcon(), bahirTab),
 	)
+	tabs.SetTabLocation(container.TabLocationTop)
 
-	w.SetContent(tabs)
+	w.SetContent(container.NewBorder(nil, newFooter(), nil, nil, tabs))
 	w.ShowAndRun()
-}
-
-// windowTitle returns the window title including the current Ethiopian year.
-func windowTitle() string {
-	now := time.Now()
-	etDate, err := dateconverter.Ethiopian(now.Year(), int(now.Month()), now.Day())
-	if err != nil {
-		return "Ethiocal — Ethiopian Calendar"
-	}
-	return fmt.Sprintf("Ethiocal — Ethiopian Calendar (%d E.C.)", etDate.Year())
 }
 
 // centeredColumn lays a single child out as a centered column capped at maxWidth,
@@ -80,6 +69,7 @@ func accentHeading(text string) *widget.RichText {
 	return widget.NewRichText(&widget.TextSegment{
 		Text: text,
 		Style: widget.RichTextStyle{
+			Alignment: fyne.TextAlignCenter,
 			ColorName: theme.ColorNamePrimary,
 			SizeName:  theme.SizeNameSubHeadingText,
 			TextStyle: fyne.TextStyle{Bold: true},
@@ -98,9 +88,9 @@ func newFooter() fyne.CanvasObject {
 	sep := widget.NewLabel("·")
 
 	return container.NewVBox(
+		widget.NewSeparator(),
 		container.NewCenter(
 			container.NewHBox(ghLink, sep, authorLink),
 		),
-		widget.NewSeparator(),
 	)
 }

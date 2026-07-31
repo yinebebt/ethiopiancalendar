@@ -18,7 +18,6 @@ plus a 5- or 6-day 13th month).
 
 * **GUI app** — graphical interface for desktop (macOS/Linux/Windows) and Android.
 * **CLI** — `ethiocal-cli` subcommands for scripting and terminal use.
-* **HTTP API** — run `ethiocal-cli --server` for integration with other services.
 * Get Ethiopian fasting and religious festival dates for a specific year.
 * Convert Ethiopian dates to Gregorian dates and vice versa.
 
@@ -36,7 +35,7 @@ Pre-built binaries are available on the [Releases](https://github.com/yinebebt/e
 | Windows (x86_64) | `curl -Lo ethiocal.zip https://github.com/yinebebt/ethiocal/releases/latest/download/ethiocal-windows-amd64.exe.zip && unzip ethiocal.zip` |
 | Android (arm64) | [`ethiocal-android.apk`](https://github.com/yinebebt/ethiocal/releases/latest) — sideload on a 64-bit device |
 
-The CLI/server tool ships per platform too, as `ethiocal-cli-<os>-<arch>` on the same Releases page.
+The CLI tool ships per platform too, as `ethiocal-cli-<os>-<arch>` on the same Releases page.
 
 ### Install with Go
 
@@ -49,7 +48,7 @@ go install github.com/yinebebt/ethiocal@latest
 ```bash
 git clone https://github.com/yinebebt/ethiocal.git
 cd ethiocal
-make build    # builds both: ./ethiocal (GUI) and ./ethiocal-cli (CLI + server)
+make build    # builds both: ./ethiocal (GUI) and ./ethiocal-cli (CLI)
 ```
 
 > **Note:** Building the GUI app requires a C compiler and OpenGL headers because
@@ -66,14 +65,15 @@ Run `ethiocal` (or launch the packaged app) to open the GUI:
 ethiocal
 ```
 
-The GUI provides two tabs:
+The GUI provides three tabs:
 
-* **Date Converter** — pick a direction (Gregorian → Ethiopian or Ethiopian → Gregorian), pick a date from the calendar, and convert.
-* **Bahire-Hasab** — enter an Ethiopian year to view all fasting and festival dates.
+* **Home** — today’s Gregorian and Ethiopian dates, plus a few nearby feasts.
+* **Date Converter** — convert between Gregorian and Ethiopian calendars.
+* **Bahire-Hasab** — fasting and festival dates for an Ethiopian year.
 
 ### CLI
 
-The terminal/server tool is a separate binary (`ethiocal-cli`), so the GUI app
+The terminal tool is a separate binary (`ethiocal-cli`), so the GUI app
 carries no CLI dependencies. Install with
 `go install github.com/yinebebt/ethiocal/cmd/ethiocal-cli@latest`.
 
@@ -81,26 +81,12 @@ carries no CLI dependencies. Install with
 # Get religious dates for Ethiopian year 2017
 ethiocal-cli bahir 2017
 
-# Convert Gregorian date to Ethiopian (year month day as separate args)
-ethiocal-cli convert gtoe 2025 2 2
+# Convert Gregorian date to Ethiopian (YYYY-MM-DD)
+ethiocal-cli convert gtoe 2025-2-2
 
 # Convert Ethiopian date to Gregorian
-ethiocal-cli convert etog 2017 5 25
+ethiocal-cli convert etog 2017-5-25
 ```
-
-### HTTP Server
-
-```bash
-ethiocal-cli --server
-```
-
-Starts the API on port `8080` (override with the `PORT` environment variable).
-
-| Endpoint | Description |
-| --- | --- |
-| `GET /api/bahir/{year}` | Bahire-Hasab calendar for the given Ethiopian year |
-| `GET /api/gtoe/{date}` | Convert Gregorian to Ethiopian (`YYYY-MM-DD`) |
-| `GET /api/etog/{date}` | Convert Ethiopian to Gregorian (`YYYY-MM-DD`) |
 
 ### As a Go library
 
@@ -111,7 +97,7 @@ import (
 )
 
 // Get festivals for Ethiopian year 2017
-festival, err := bahirehasab.BahireHasab(2017)
+festival, err := bahirehasab.NewFestival(2017)
 
 // Gregorian → Ethiopian
 etDate, err := dateconverter.Ethiopian(2025, 2, 2)
@@ -123,3 +109,5 @@ gregDate, err := dateconverter.Gregorian(2017, 5, 25)
 ## License
 
 See [LICENSE](LICENSE).
+
+
