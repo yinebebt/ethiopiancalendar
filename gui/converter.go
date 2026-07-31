@@ -111,18 +111,27 @@ func newConverterTab() fyne.CanvasObject {
 	resultCard := widget.NewCard("", "", resultBox)
 	resultCard.Hide()
 
-	// showResult displays the converted date as a large accent-colored value.
-	showResult := func(title, date string) {
+	// showResult displays long human-readable form above the ISO date.
+	showResult := func(title, iso, long string) {
 		resultTitle.SetText(title)
-		resultValue.Segments = []widget.RichTextSegment{&widget.TextSegment{
-			Text: date,
-			Style: widget.RichTextStyle{
-				Alignment: fyne.TextAlignCenter,
-				ColorName: theme.ColorNamePrimary,
-				SizeName:  theme.SizeNameHeadingText,
-				TextStyle: fyne.TextStyle{Bold: true},
+		resultValue.Segments = []widget.RichTextSegment{
+			&widget.TextSegment{
+				Text: long + "\n",
+				Style: widget.RichTextStyle{
+					Alignment: fyne.TextAlignCenter,
+					ColorName: theme.ColorNamePrimary,
+					SizeName:  theme.SizeNameHeadingText,
+					TextStyle: fyne.TextStyle{Bold: true},
+				},
 			},
-		}}
+			&widget.TextSegment{
+				Text: iso,
+				Style: widget.RichTextStyle{
+					Alignment: fyne.TextAlignCenter,
+					SizeName:  theme.SizeNameText,
+				},
+			},
+		}
 		resultValue.Refresh()
 		resultCard.Show()
 	}
@@ -130,7 +139,7 @@ func newConverterTab() fyne.CanvasObject {
 	// Direction toggle — a compact label plus swap button, not a full-width
 	// dropdown for two choices.
 	gregToEth := true
-	dirLabel := widget.NewLabel("Gregorian → Ethiopian")
+	dirLabel := widget.NewLabel("Gregorian to Ethiopian")
 	dirLabel.TextStyle = fyne.TextStyle{Bold: true}
 
 	applyDirection := func() {
@@ -138,11 +147,11 @@ func newConverterTab() fyne.CanvasObject {
 		errorLabel.Hide()
 		calContainer.Hide()
 		if gregToEth {
-			dirLabel.SetText("Gregorian → Ethiopian")
+			dirLabel.SetText("Gregorian to Ethiopian")
 			ethContainer.Hide()
 			gregPickerRow.Show()
 		} else {
-			dirLabel.SetText("Ethiopian → Gregorian")
+			dirLabel.SetText("Ethiopian to Gregorian")
 			gregPickerRow.Hide()
 			ethContainer.Show()
 		}
@@ -172,7 +181,12 @@ func newConverterTab() fyne.CanvasObject {
 				showErr("Error: " + err.Error())
 				return
 			}
-			showResult("Ethiopian Date", etDate.Format("2006-01-02"))
+			long, err := dateconverter.FormatEthiopian(etDate.Year(), int(etDate.Month()), etDate.Day())
+			if err != nil {
+				showErr("Error: " + err.Error())
+				return
+			}
+			showResult("Ethiopian Date", etDate.Format("2006-01-02"), long)
 			return
 		}
 
@@ -181,7 +195,7 @@ func newConverterTab() fyne.CanvasObject {
 			showErr("Error: " + err.Error())
 			return
 		}
-		showResult("Gregorian Date", gregDate.Format("2006-01-02"))
+		showResult("Gregorian Date", gregDate.Format("2006-01-02"), dateconverter.FormatGregorian(gregDate))
 	})
 	convertBtn.Importance = widget.HighImportance
 
@@ -198,7 +212,6 @@ func newConverterTab() fyne.CanvasObject {
 		),
 		errorLabel,
 		resultCard,
-		newFooter(),
 	)
 
 	return centered(container.NewScroll(form))

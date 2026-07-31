@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 	"github.com/yinebebt/ethiocal/dateconverter"
@@ -13,9 +15,12 @@ var convertCmd = &cobra.Command{
 	Short: "Convert dates between Ethiopian and Gregorian calendars",
 }
 
-// parseYMD parses the [year month day] positional args, naming the first
-// non-integer field in the error.
-func parseYMD(args []string) (year, month, day int, err error) {
+// parseDate parses a YYYY-MM-DD date string.
+func parseDate(s string) (year, month, day int, err error) {
+	parts := strings.Split(s, "-")
+	if len(parts) != 3 {
+		return 0, 0, 0, fmt.Errorf("invalid date %q, expected YYYY-MM-DD", s)
+	}
 	fields := []struct {
 		name string
 		out  *int
@@ -25,19 +30,21 @@ func parseYMD(args []string) (year, month, day int, err error) {
 		{"day", &day},
 	}
 	for i, f := range fields {
-		if *f.out, err = strconv.Atoi(args[i]); err != nil {
-			return 0, 0, 0, fmt.Errorf("invalid %s: %s", f.name, args[i])
+		if *f.out, err = strconv.Atoi(parts[i]); err != nil {
+			return 0, 0, 0, fmt.Errorf("invalid %s in %q", f.name, s)
 		}
 	}
 	return year, month, day, nil
 }
 
 var gtoeCmd = &cobra.Command{
-	Use:   "gtoe [year] [month] [day]",
-	Short: "Convert Gregorian date to Ethiopian date",
-	Args:  cobra.ExactArgs(3),
+	Use:     "gtoe [date]",
+	Short:   "Convert Gregorian date to Ethiopian date",
+	Long:    "Convert a Gregorian date (YYYY-MM-DD) to Ethiopian.",
+	Args:    cobra.ExactArgs(1),
+	Example: "ethiocal-cli convert gtoe 2025-02-1",
 	Run: func(cmd *cobra.Command, args []string) {
-		year, month, day, err := parseYMD(args)
+		year, month, day, err := parseDate(args[0])
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -49,17 +56,23 @@ var gtoeCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("\nGregorian Date: %04d-%02d-%02d\n", year, month, day)
-		fmt.Println("Converted Ethiopian Date:", etDate.Format("2006-01-02"))
+		fmt.Printf("\nGregorian Date: %s\n", dateconverter.FormatGregorian(time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)))
+		fmt.Printf("  %04d-%02d-%02d\n", year, month, day)
+		if long, err := dateconverter.FormatEthiopian(etDate.Year(), int(etDate.Month()), etDate.Day()); err == nil {
+			fmt.Println("Converted Ethiopian Date:", long)
+		}
+		fmt.Println(" ", etDate.Format("2006-01-02"))
 	},
 }
 
 var etogCmd = &cobra.Command{
-	Use:   "etog [year] [month] [day]",
-	Short: "Convert Ethiopian date to Gregorian date",
-	Args:  cobra.ExactArgs(3),
+	Use:     "etog [date]",
+	Short:   "Convert Ethiopian date to Gregorian date",
+	Long:    "Convert an Ethiopian date (YYYY-MM-DD) to Gregorian.",
+	Args:    cobra.ExactArgs(1),
+	Example: "ethiocal-cli convert etog 2017-5-25",
 	Run: func(cmd *cobra.Command, args []string) {
-		year, month, day, err := parseYMD(args)
+		year, month, day, err := parseDate(args[0])
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
@@ -70,8 +83,12 @@ var etogCmd = &cobra.Command{
 			fmt.Println("Error converting date:", err)
 			return
 		}
-		fmt.Printf("\nEthiopian Date: %04d-%02d-%02d\n", year, month, day)
-		fmt.Println("Converted Gregorian Date:", gregDate.Format("2006-01-02"))
+		if long, err := dateconverter.FormatEthiopian(year, month, day); err == nil {
+			fmt.Println("\nEthiopian Date:", long)
+		}
+		fmt.Printf("  %04d-%02d-%02d\n", year, month, day)
+		fmt.Println("Converted Gregorian Date:", dateconverter.FormatGregorian(gregDate))
+		fmt.Println(" ", gregDate.Format("2006-01-02"))
 	},
 }
 

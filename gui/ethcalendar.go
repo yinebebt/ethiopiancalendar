@@ -16,6 +16,12 @@ import (
 // to match Gregorian time.Weekday (Sunday == 0).
 var ethWeekdayHeaders = [7]string{"እ", "ሰ", "ማ", "ረ", "ሐ", "ዓ", "ቅ"}
 
+// ethMonths maps 0-based month index to Amharic month name (መስከረም … ጳጉሜ).
+var ethMonths = [13]string{
+	"መስከረም", "ጥቅምት", "ኅዳር", "ታኅሣሥ", "ጥር", "የካቲት",
+	"መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ", "ጳጉሜ",
+}
+
 // ethCalendar is a tappable Ethiopian month-grid date picker mirroring the
 // Gregorian widget.NewCalendar: chevrons navigate month/year, tapping picks a day.
 type ethCalendar struct {

@@ -32,7 +32,7 @@ jobs:
     - name: Test
       run: go test -v -cover ./...
 
-  # Desktop: GUI bundle + native CLI/server binary, built per OS then uploaded.
+  # Desktop: GUI bundle + native CLI binary, built per OS then uploaded.
   desktop:
     if: startsWith(github.ref, 'refs/tags/v')
     needs: [ lint, test ]

@@ -1,5 +1,5 @@
 // Command ethiocal-cli is the terminal companion to the Ethiocal GUI app:
-// date conversion, Bahire-Hasab dates, and the HTTP API.
+// date conversion and Bahire-Hasab festival dates.
 package main
 
 func main() {

@@ -1,99 +1,104 @@
 package bahirehasab
 
-import (
-	"testing"
-)
+import "testing"
 
-func TestGetYear(t *testing.T) {
-	sampleYear := Year{
-		Year:          2016,
-		EvangelistNum: 0,
-		Evangelist:    "ዮሐንስ(John)",
-		DayOfTheWeek:  "ማክሰኞ(Tuesday)",
+func TestNewFestival_2016(t *testing.T) {
+	f, err := NewFestival(2016)
+	if err != nil {
+		t.Fatalf("NewFestival: %v", err)
 	}
-	year := getYear(sampleYear.Year)
-	if year != sampleYear {
-		t.Errorf("Test failed, expected %v got %v", sampleYear, year)
-	}
-}
 
-func TestBasic(t *testing.T) {
-	// Basic for the year 2016
-	expected := Basic{
+	if f.Year.Evangelist != EvangelistJohn {
+		t.Errorf("evangelist: got %v want %v", f.Year.Evangelist, EvangelistJohn)
+	}
+	if f.Year.NewYearWeekday != Tuesday {
+		t.Errorf("new year weekday: got %v want %v", f.Year.NewYearWeekday, Tuesday)
+	}
+
+	wantBasic := Basic{
 		Medeb:       11,
 		Wenber:      10,
 		Abektie:     20,
 		Metiq:       10,
-		BealeMetiq:  2,
+		BealeMetiq:  BealeMetiqTikimt,
 		MebajaHamer: 18,
-		Nenewie: Date{
-			DateOfTheMonth: 18,
-			MonthOfTheYear: 6,
-		},
+		Nenewie:     Date{Day: 18, Month: Yekatit},
 	}
-	got := getBasic(2016)
-	if got != expected {
-		t.Errorf("Test failed: expected %v got %v", expected, got)
+	if f.Basic != wantBasic {
+		t.Errorf("basic:\n got %+v\nwant %+v", f.Basic, wantBasic)
+	}
+
+	wantFasting := Fasting{
+		Abiy:       Date{Day: 2, Month: Megabit},
+		DebreZeit:  Date{Day: 29, Month: Megabit},
+		Hosanna:    Date{Day: 20, Month: Miazia},
+		Siklet:     Date{Day: 25, Month: Miazia},
+		Tinsaye:    Date{Day: 27, Month: Miazia},
+		RkbeKahnat: Date{Day: 21, Month: Ginbot},
+		Erget:      Date{Day: 6, Month: Sene},
+		Peraklitos: Date{Day: 16, Month: Sene},
+		Hawariyat:  Date{Day: 17, Month: Sene},
+		Dihnet:     Date{Day: 19, Month: Sene},
+		Nebiyat:    Date{Day: 15, Month: Hidar},
+		Filseta:    Date{Day: 1, Month: Nehase},
+		Gehad:      Date{Day: 10, Month: Tir},
+	}
+	if f.Fasting != wantFasting {
+		t.Errorf("fasting:\n got %+v\nwant %+v", f.Fasting, wantFasting)
 	}
 }
 
-func TestFasting(t *testing.T) {
-	// year 2016 sample fasting dates
-	expected := Fasting{
-		Abiy: Date{
-			DateOfTheMonth: 2,
-			MonthOfTheYear: 7,
-		},
-		DebreZeit: Date{
-			DateOfTheMonth: 29,
-			MonthOfTheYear: 7,
-		},
-		Hosanna: Date{
-			DateOfTheMonth: 20,
-			MonthOfTheYear: 8,
-		},
-		Siklet: Date{
-			DateOfTheMonth: 25,
-			MonthOfTheYear: 8,
-		},
-		Tinsaye: Date{
-			DateOfTheMonth: 27,
-			MonthOfTheYear: 8,
-		},
-		RkbeKahnat: Date{
-			DateOfTheMonth: 21,
-			MonthOfTheYear: 9,
-		},
-		Erget: Date{
-			DateOfTheMonth: 6,
-			MonthOfTheYear: 10,
-		},
-		Peraklitos: Date{
-			DateOfTheMonth: 16,
-			MonthOfTheYear: 10,
-		},
-		Hawariyat: Date{
-			DateOfTheMonth: 17,
-			MonthOfTheYear: 10,
-		},
-		Dihnet: Date{
-			DateOfTheMonth: 19,
-			MonthOfTheYear: 10,
-		},
+func TestDate_AddDays(t *testing.T) {
+	tests := []struct {
+		name string
+		in   Date
+		add  int
+		want Date
+	}{
+		{"abiy_from_nenewie", Date{Day: 18, Month: Yekatit}, 14, Date{Day: 2, Month: Megabit}},
+		{"exact_month_end", Date{Day: 1, Month: Tir}, 29, Date{Day: 30, Month: Tir}},
+		{"cross_month", Date{Day: 30, Month: Tir}, 1, Date{Day: 1, Month: Yekatit}},
+		{"never_day_zero", Date{Day: 18, Month: Yekatit}, 12, Date{Day: 30, Month: Yekatit}},
 	}
-
-	got := getFasting(2016)
-	if expected != got {
-		t.Errorf("Test failed expected %v got %v", expected, got)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := tt.in.AddDays(tt.add)
+			if got != tt.want {
+				t.Errorf("AddDays(%d): got %v want %v", tt.add, got, tt.want)
+			}
+			if !got.IsValid() {
+				t.Errorf("result not valid: %v", got)
+			}
+		})
 	}
 }
 
-func TestBahireHasab(t *testing.T) {
-	res, err := BahireHasab(2016)
+func TestNewFestival_invalid(t *testing.T) {
+	if _, err := NewFestival(-1); err == nil {
+		t.Fatal("expected error for negative year")
+	}
+}
+
+func TestNewFestival_2006_metiq30(t *testing.T) {
+	// wenber=0 → (0*19)%30=0 → normalized to መጥቅ 30, በዓለ-መጥቅ መስከረም ፴.
+	f, err := NewFestival(2006)
 	if err != nil {
-		t.Errorf("Test failed, expected %v but got %v ", nil, err)
+		t.Fatalf("NewFestival: %v", err)
 	}
-	if res.Year.Year != 2016 {
-		t.Errorf("Test failed, expected %v but got %v ", 2016, res.Year.Year)
+	if f.Basic.Metiq != 30 {
+		t.Errorf("metiq: got %d want 30", f.Basic.Metiq)
+	}
+	if f.Basic.BealeMetiq != BealeMetiqMeskerem {
+		t.Errorf("beale metiq: got %v want %v", f.Basic.BealeMetiq, BealeMetiqMeskerem)
+	}
+	if f.Basic.Nenewie != (Date{Day: 3, Month: Yekatit}) {
+		t.Errorf("nenewie: got %v want 06-03", f.Basic.Nenewie)
+	}
+}
+
+func TestDate_String(t *testing.T) {
+	d := Date{Day: 18, Month: Yekatit}
+	if got := d.String(); got != "06-18" {
+		t.Errorf("String: got %q want %q", got, "06-18")
 	}
 }

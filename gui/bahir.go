@@ -13,18 +13,11 @@ import (
 	"github.com/yinebebt/ethiocal/dateconverter"
 )
 
-// ethMonths maps month index (0-based) to Amharic month name.
-// Use MonthOfTheYear-1 to look up since MonthOfTheYear is 1-based.
-var ethMonths = [13]string{
-	"መስከረም", "ጥቅምት", "ኅዳር", "ታኅሣሥ", "ጥር", "የካቲት",
-	"መጋቢት", "ሚያዝያ", "ግንቦት", "ሰኔ", "ሐምሌ", "ነሐሴ", "ጳጉሜ",
-}
-
 func fmtDateNamed(d bahirehasab.Date) string {
-	if d.MonthOfTheYear >= 1 && d.MonthOfTheYear <= 13 {
-		return fmt.Sprintf("%s %d (%02d-%02d)", ethMonths[d.MonthOfTheYear-1], d.DateOfTheMonth, d.MonthOfTheYear, d.DateOfTheMonth)
+	if d.IsValid() {
+		return fmt.Sprintf("%s %d (%s)", d.Month.String(), d.Day, d.String())
 	}
-	return fmt.Sprintf("Month %d, Day %d", d.MonthOfTheYear, d.DateOfTheMonth)
+	return fmt.Sprintf("Month %d, Day %d", int(d.Month), d.Day)
 }
 
 func currentEthiopianYear() int {
@@ -53,6 +46,9 @@ func festivalEntries(f bahirehasab.Festival) []festEntry {
 		{"Peraklitos (ጰራቅሊጦስ)", fmtDateNamed(f.Fasting.Peraklitos)},
 		{"Hawariyat (ጾመ ሐዋሪያት)", fmtDateNamed(f.Fasting.Hawariyat)},
 		{"Dihnet (ጾመ ድህነት)", fmtDateNamed(f.Fasting.Dihnet)},
+		{"Nebiyat (ጾመ ነቢያት)", fmtDateNamed(f.Fasting.Nebiyat)},
+		{"Filseta (ጾመ ፍልሰታ)", fmtDateNamed(f.Fasting.Filseta)},
+		{"Gehad (ጾመ ገሀድ)", fmtDateNamed(f.Fasting.Gehad)},
 	}
 }
 
@@ -116,14 +112,14 @@ func newBahirTab() fyne.CanvasObject {
 			showErr("Please enter a valid Ethiopian year.")
 			return
 		}
-		festival, err := bahirehasab.BahireHasab(year)
+		festival, err := bahirehasab.NewFestival(year)
 		if err != nil {
 			showErr("Error: " + err.Error())
 			return
 		}
 		errorLabel.Hide()
-		evangVal.SetText(festival.Year.Evangelist)
-		newYearVal.SetText(festival.Year.DayOfTheWeek)
+		evangVal.SetText(festival.Year.Evangelist.String())
+		newYearVal.SetText(festival.Year.NewYearWeekday.String())
 		infoCard.Show()
 		entries = festivalEntries(festival)
 		list.Refresh()
@@ -157,9 +153,10 @@ func newBahirTab() fyne.CanvasObject {
 		yearRow,
 	))
 
-	// Fixed header and footer; the scrolling list fills the middle (mobile-friendly).
+	// Fixed header; the scrolling list fills the middle (mobile-friendly).
+	// Footer is pinned at the app window level.
 	header := container.NewVBox(inputCard, errorLabel, infoCard)
-	content := container.NewBorder(header, newFooter(), nil, nil, list)
+	content := container.NewBorder(header, nil, nil, nil, list)
 
 	lookup(strconv.Itoa(curYear))
 

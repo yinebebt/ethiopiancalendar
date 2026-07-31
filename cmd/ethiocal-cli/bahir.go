@@ -19,7 +19,7 @@ var bahirCmd = &cobra.Command{
 			return
 		}
 
-		festival, err := bahirehasab.BahireHasab(year)
+		festival, err := bahirehasab.NewFestival(year)
 		if err != nil {
 			fmt.Println("Error fetching bahire-hasab:", err)
 			return
@@ -32,8 +32,8 @@ var bahirCmd = &cobra.Command{
 func printFestivalInfo(festival bahirehasab.Festival) {
 	fmt.Printf("\nBahire-hasab Calendar for year %d\n", festival.Year.Year)
 	fmt.Println("Year Information:")
-	fmt.Printf("  Evangelist: %s (Number: %d)\n", festival.Year.Evangelist, festival.Year.EvangelistNum)
-	fmt.Printf("  New Year falls on: %s\n", festival.Year.DayOfTheWeek)
+	fmt.Printf("  Evangelist: %s\n", festival.Year.Evangelist)
+	fmt.Printf("  New Year falls on: %s\n", festival.Year.NewYearWeekday)
 
 	fmt.Println("\nBasic Information:")
 	fmt.Printf("  Medeb: %d\n", festival.Basic.Medeb)
@@ -42,17 +42,21 @@ func printFestivalInfo(festival bahirehasab.Festival) {
 	fmt.Printf("  Metiq: %d\n", festival.Basic.Metiq)
 	fmt.Printf("  Beale Metiq: %d\n", festival.Basic.BealeMetiq)
 	fmt.Printf("  Mebaja Hamer: %d\n", festival.Basic.MebajaHamer)
-	fmt.Printf("  Nenewie: %02d-%02d\n", festival.Basic.Nenewie.MonthOfTheYear, festival.Basic.Nenewie.DateOfTheMonth)
+	fmt.Printf("  Nenewie: %s\n", festival.Basic.Nenewie)
 
 	fmt.Println("\nFasting Dates:")
-	fmt.Printf("  Abiy Tsome: %02d-%02d\n", festival.Fasting.Abiy.MonthOfTheYear, festival.Fasting.Abiy.DateOfTheMonth)
-	fmt.Printf("  Debre Zeit: %02d-%02d\n", festival.Fasting.DebreZeit.MonthOfTheYear, festival.Fasting.DebreZeit.DateOfTheMonth)
-	fmt.Printf("  Hosanna: %02d-%02d\n", festival.Fasting.Hosanna.MonthOfTheYear, festival.Fasting.Hosanna.DateOfTheMonth)
-	fmt.Printf("  Siklet: %02d-%02d\n", festival.Fasting.Siklet.MonthOfTheYear, festival.Fasting.Siklet.DateOfTheMonth)
-	fmt.Printf("  Tinsaye: %02d-%02d\n", festival.Fasting.Tinsaye.MonthOfTheYear, festival.Fasting.Tinsaye.DateOfTheMonth)
-	fmt.Printf("  Rkbe Kahnat: %02d-%02d\n", festival.Fasting.RkbeKahnat.MonthOfTheYear, festival.Fasting.RkbeKahnat.DateOfTheMonth)
-	fmt.Printf("  Dihnet: %02d-%02d\n", festival.Fasting.Dihnet.MonthOfTheYear, festival.Fasting.Dihnet.DateOfTheMonth)
-	fmt.Printf("  Hawariyat: %02d-%02d\n", festival.Fasting.Hawariyat.MonthOfTheYear, festival.Fasting.Hawariyat.DateOfTheMonth)
-	fmt.Printf("  Erget: %02d-%02d\n", festival.Fasting.Erget.MonthOfTheYear, festival.Fasting.Erget.DateOfTheMonth)
-	fmt.Printf("  Peraklitos: %02d-%02d\n", festival.Fasting.Peraklitos.MonthOfTheYear, festival.Fasting.Peraklitos.DateOfTheMonth)
+	fmt.Printf("  Abiy Tsome: %s\n", festival.Fasting.Abiy)
+	fmt.Printf("  Debre Zeit: %s\n", festival.Fasting.DebreZeit)
+	fmt.Printf("  Hosanna: %s\n", festival.Fasting.Hosanna)
+	fmt.Printf("  Siklet: %s\n", festival.Fasting.Siklet)
+	fmt.Printf("  Tinsaye: %s\n", festival.Fasting.Tinsaye)
+	fmt.Printf("  Rkbe Kahnat: %s\n", festival.Fasting.RkbeKahnat)
+	fmt.Printf("  Dihnet: %s\n", festival.Fasting.Dihnet)
+	fmt.Printf("  Hawariyat: %s\n", festival.Fasting.Hawariyat)
+	fmt.Printf("  Erget: %s\n", festival.Fasting.Erget)
+	fmt.Printf("  Peraklitos: %s\n", festival.Fasting.Peraklitos)
+	fmt.Println("\nFixed Fasts:")
+	fmt.Printf("  Nebiyat (ኅዳር 15): %s\n", festival.Fasting.Nebiyat)
+	fmt.Printf("  Filseta (ነሐሴ 1): %s\n", festival.Fasting.Filseta)
+	fmt.Printf("  Gehad (ጥር 10): %s\n", festival.Fasting.Gehad)
 }
