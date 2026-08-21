@@ -153,8 +153,7 @@ func newBahirTab() fyne.CanvasObject {
 		yearRow,
 	))
 
-	// Fixed header; the scrolling list fills the middle (mobile-friendly).
-	// Footer is pinned at the app window level.
+	// Fixed header, footer is pinned at the app window level.
 	header := container.NewVBox(inputCard, errorLabel, infoCard)
 	content := container.NewBorder(header, nil, nil, nil, list)
 

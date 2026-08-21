@@ -32,7 +32,8 @@ func Gregorian(year, month, date int) (time.Time, error) {
 
 	// calculate number of days up to that date
 	until := ((month - 1) * 30) + date
-	if until <= 37 && year <= 1575 { //mysterious rule
+	// ET 1575 == GC 1582, Julian/Gregorian switch.
+	if until <= 37 && year <= 1575 {
 		until += 28
 		gregorianMonths[0] = 31
 	} else {

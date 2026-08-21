@@ -64,7 +64,7 @@ func centered(o fyne.CanvasObject) fyne.CanvasObject {
 }
 
 // accentHeading returns a bold, accent-colored heading. It uses RichText with a
-// themed color name so the bundled Ethiopic font still renders Amharic.
+// themed color name, so the bundled Ethiopic font still renders Amharic.
 func accentHeading(text string) *widget.RichText {
 	return widget.NewRichText(&widget.TextSegment{
 		Text: text,

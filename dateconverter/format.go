@@ -16,7 +16,7 @@ var ethWeekdayNames = [7]string{
 	"እሁድ", "ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "አርብ", "ቅዳሜ",
 }
 
-// FormatGregorian returns a long English Gregorian date with weekday,
+// FormatGregorian returns a long English Gregorian date with weekday.
 // e.g. "Monday, July 2, 2012".
 func FormatGregorian(t time.Time) string {
 	return t.Format("Monday, January 2, 2006")

@@ -58,7 +58,7 @@ func Ethiopian(year, month, date int) (time.Time, error) {
 		december = 25
 	}
 
-	// take into account the 1582 change
+	// Julian alignment before 15 Oct 1582.
 	if year < 1582 {
 		ethiopianMonths[1] = 0
 		ethiopianMonths[2] = december
